@@ -15,10 +15,17 @@ const sourceCodeSchema = new mongoose.Schema({
         required: true,
         min: 0
     },
+    category: {
+        type: String,
+        default: 'Khác'
+    },
     thumbnail: {
         type: String,
         default: ''
     },
+    demoImages: [{
+        type: String
+    }],
     filePath: {
         type: String,
         required: true

@@ -22,13 +22,25 @@ exports.authenticate = (req, res, next) => {
     }
 };
 
-exports.isAdmin = (req, res, next) => {
-    if (req.user && req.user.role === 'admin') {
-        next();
-    } else {
-        return res.status(403).json({
-            success: false,
-            message: 'Yêu cầu quyền Quản trị viên (Admin)!'
-        });
+const User = require('../models/User');
+
+exports.isAdmin = async (req, res, next) => {
+    try {
+        if (!req.user || !req.user.userId) {
+            return res.status(403).json({ success: false, message: 'Yêu cầu quyền Quản trị viên (Admin)!' });
+        }
+        const user = await User.findById(req.user.userId);
+
+        if (user && user.role === 'admin') {
+            next();
+        } else {
+            return res.status(403).json({
+                success: false,
+                message: 'Yêu cầu quyền Quản trị viên (Admin)!'
+            });
+        }
+    } catch (error) {
+        console.error('Lỗi check admin:', error);
+        return res.status(500).json({ success: false, message: 'Lỗi máy chủ' });
     }
 };
