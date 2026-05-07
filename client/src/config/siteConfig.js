@@ -29,6 +29,8 @@ const siteConfig = {
     facebook: 'https://facebook.com/sellsource',
     twitter: 'https://twitter.com/sellsource',
     github: 'https://github.com/sellsource',
+    // Link Zalo cá nhân — thay bằng số điện thoại hoặc link OA thực
+    zalo: 'https://zalo.me/0987654321',
   },
 
   // ===== Danh mục sản phẩm =====

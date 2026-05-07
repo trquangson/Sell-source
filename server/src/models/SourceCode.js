@@ -34,6 +34,11 @@ const sourceCodeSchema = new mongoose.Schema({
         type: String,
         enum: ['active', 'inactive'],
         default: 'active'
+    },
+    purchaseCount: {
+        type: Number,
+        default: 0,
+        min: 0
     }
 }, { timestamps: true });
 

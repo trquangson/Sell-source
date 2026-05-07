@@ -100,7 +100,7 @@ const Home = () => {
               >
                 <div className="aspect-[4/3] bg-slate-100 overflow-hidden relative">
                   <img
-                    src={source.thumbnail ? `http://localhost:3000${source.thumbnail}` : 'https://via.placeholder.com/600x400?text=No+Image'}
+                    src={source.thumbnail ? `${siteConfig.assetBaseUrl}${source.thumbnail}` : 'https://via.placeholder.com/600x400?text=No+Image'}
                     alt={source.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
                   />

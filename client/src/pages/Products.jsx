@@ -14,9 +14,10 @@ const Products = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const initialSearch = searchParams.get('search') || '';
+  const initialCategory = searchParams.get('category') || 'Tất cả';
 
   const [searchTerm, setSearchTerm] = useState(initialSearch);
-  const [selectedCategory, setSelectedCategory] = useState('Tất cả');
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [sortBy, setSortBy] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -24,10 +25,17 @@ const Products = () => {
 
   useEffect(() => {
     const urlSearch = searchParams.get('search');
+    const urlCategory = searchParams.get('category');
     if (urlSearch !== null) {
       setSearchTerm(urlSearch);
       setSelectedCategory('Tất cả');
-      setCurrentPage(1); // Reset về trang 1 khi search từ header
+      setCurrentPage(1);
+    }
+    if (urlCategory) {
+      setSelectedCategory(urlCategory);
+      setSearchTerm('');
+      setCurrentPage(1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [location.search]);
 
@@ -99,8 +107,8 @@ const Products = () => {
                     <button
                       onClick={() => {
                         setSelectedCategory(cat);
-                        // Xóa search query khi click danh mục để dễ nhìn
                         if (searchTerm) setSearchTerm('');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-between transition-colors ${selectedCategory === cat
                         ? 'bg-primary-50 text-primary-700'
@@ -132,8 +140,8 @@ const Products = () => {
 
             <div className="flex items-center gap-2">
               <ArrowUpDown size={18} className="text-slate-500" />
-              <select 
-                value={sortBy} 
+              <select
+                value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="bg-white border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2 outline-none cursor-pointer"
               >
@@ -158,33 +166,52 @@ const Products = () => {
                   </div>
                 ) : (
                   pagedSources.map(source => (
-                    <div key={source._id} className="card overflow-hidden group hover:shadow-lg transition-all flex flex-col h-full border border-slate-200 bg-white">
+                    <div key={source._id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+                      {/* Ảnh */}
                       <div className="aspect-[4/3] bg-slate-100 overflow-hidden relative">
                         <img
-                          src={source.thumbnail ? `http://localhost:3000${source.thumbnail}` : 'https://via.placeholder.com/600x400?text=No+Image'}
+                          src={source.thumbnail ? `${siteConfig.assetBaseUrl}${source.thumbnail}` : 'https://via.placeholder.com/600x400?text=No+Image'}
                           alt={source.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
-                        <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-medium text-white shadow-sm border border-white/10">
+                        <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-semibold text-white border border-white/10">
                           {source.category || 'Khác'}
                         </div>
-                        <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg text-sm font-bold text-primary-600 shadow-sm border border-white">
-                          {source.price.toLocaleString()}đ
-                        </div>
                       </div>
-                      <div className="p-4 flex flex-col flex-1">
-                        <h3 className="text-base font-bold text-slate-900 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
-                          {source.title}
-                        </h3>
-                        <p className="text-sm text-slate-500 mb-4 line-clamp-2 flex-1">
-                          {source.description}
-                        </p>
+
+                      {/* Nội dung */}
+                      <div className="p-4 flex flex-col flex-1 gap-3">
+                        <div className="flex-1">
+                          <h3 className="text-base font-bold text-slate-900 line-clamp-2 group-hover:text-primary-600 transition-colors leading-snug">
+                            {source.title}
+                          </h3>
+                          <p className="text-sm text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
+                            {source.description}
+                          </p>
+                        </div>
+
+                        {/* Giá + lượt mua */}
+                        <div className="flex items-end justify-between pt-3 border-t border-slate-100">
+                          <div>
+                            <p className="text-xs text-slate-400 font-medium mb-0.5">Giá bán</p>
+                            <p className="text-xl font-extrabold text-primary-600 leading-none">
+                              {source.price.toLocaleString()}<span className="text-sm font-semibold ml-0.5">đ</span>
+                            </p>
+                          </div>
+                          {source.purchaseCount > 0 && (
+                            <div className="text-right">
+                              <p className="text-xs text-slate-400 mb-0.5">Đã bán</p>
+                              <p className="text-sm font-bold text-slate-600">{source.purchaseCount.toLocaleString()}</p>
+                            </div>
+                          )}
+                        </div>
+
                         <Link
                           to={`/product/${source._id}`}
-                          className="w-full py-2.5 px-4 bg-primary-50 hover:bg-primary-600 text-primary-700 hover:text-white rounded-xl font-medium transition-all text-center flex items-center justify-center gap-2 group-hover:shadow-md"
+                          className="w-full py-2.5 px-4 bg-primary-50 hover:bg-primary-600 text-primary-700 hover:text-white rounded-xl font-semibold transition-all text-center flex items-center justify-center gap-2 border border-primary-100 hover:border-primary-600 text-sm"
                         >
-                          <ShoppingCart size={18} />
-                          Chi tiết
+                          <ShoppingCart size={16} />
+                          Xem chi tiết
                         </Link>
                       </div>
                     </div>

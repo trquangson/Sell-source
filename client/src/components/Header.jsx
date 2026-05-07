@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
-import { LayoutDashboard, LogOut, Search, Menu, X } from 'lucide-react';
+import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, ChevronRight, Tag } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
 
 const Header = () => {
   const [user, setUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false); // mobile categories
+  const [isProductsHovered, setIsProductsHovered] = useState(false);
+  const hoverTimeout = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,12 +19,12 @@ const Header = () => {
       try {
         const res = await axiosClient.get('/auth/me');
         setUser(res.user);
-      } catch (error) {
+      } catch {
         setUser(null);
       }
     };
     fetchUser();
-    setIsMobileMenuOpen(false); // Đóng menu mobile khi chuyển trang
+    setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
   const handleLogout = async () => {
@@ -42,35 +45,98 @@ const Header = () => {
     }
   };
 
-  const navLinks = siteConfig.navLinks;
+  // Dùng timeout để tránh dropdown đóng ngay khi di chuột giữa trigger và dropdown
+  const handleMouseEnter = () => {
+    clearTimeout(hoverTimeout.current);
+    setIsProductsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeout.current = setTimeout(() => setIsProductsHovered(false), 150);
+  };
 
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        
+
         {/* Logo & Desktop Nav */}
         <div className="flex items-center gap-8 lg:gap-12">
           <Link to="/" className="text-2xl font-bold text-primary-600 tracking-tight flex-shrink-0">{siteConfig.name}</Link>
-          
+
           <nav className="hidden md:flex gap-8">
-            {navLinks.map(link => (
-              <Link 
-                key={link.path} 
-                to={link.path}
-                className={`text-base font-semibold transition-colors ${location.pathname === link.path ? 'text-primary-600' : 'text-slate-600 hover:text-primary-600'}`}
+            {/* Link Trang chủ thường */}
+            <Link
+              to="/"
+              className={`text-base font-semibold transition-colors ${location.pathname === '/' ? 'text-primary-600' : 'text-slate-600 hover:text-primary-600'}`}
+            >
+              Trang chủ
+            </Link>
+
+            {/* Link Sản phẩm với Mega Dropdown danh mục */}
+            <div
+              className="relative"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Link
+                to="/products"
+                className={`text-base font-semibold transition-colors flex items-center gap-1 ${location.pathname === '/products' ? 'text-primary-600' : 'text-slate-600 hover:text-primary-600'}`}
               >
-                {link.name}
+                Sản phẩm
+                <ChevronDown
+                  size={16}
+                  className={`transition-transform duration-200 ${isProductsHovered ? 'rotate-180' : ''}`}
+                />
               </Link>
-            ))}
+
+              {/* Dropdown */}
+              <div
+                className={`absolute top-full left-0 mt-2 w-52 bg-white rounded-2xl border border-slate-200 shadow-xl py-2 transition-all duration-200 ${
+                  isProductsHovered ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
+                }`}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                {/* Header dropdown */}
+                <div className="px-4 py-2 border-b border-slate-100 mb-1">
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <Tag size={11} /> Danh mục
+                  </p>
+                </div>
+
+                {/* Tất cả sản phẩm */}
+                <Link
+                  to="/products"
+                  className="flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                >
+                  Tất cả sản phẩm
+                  <ChevronRight size={14} className="text-slate-400" />
+                </Link>
+
+                <div className="h-px bg-slate-100 mx-3 my-1" />
+
+                {/* Từng danh mục */}
+                {siteConfig.categories.map((cat) => (
+                  <Link
+                    key={cat}
+                    to={`/products?category=${encodeURIComponent(cat)}`}
+                    className="flex items-center px-4 py-2.5 text-sm text-slate-600 hover:bg-primary-50 hover:text-primary-700 transition-colors gap-2"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary-400 flex-shrink-0" />
+                    {cat}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </nav>
         </div>
 
         {/* Search Bar (Desktop) */}
         <div className="hidden md:flex flex-1 max-w-[280px] mx-6">
           <form onSubmit={handleSearch} className="relative w-full">
-            <input 
-              type="text" 
-              placeholder="Tìm kiếm mã nguồn..." 
+            <input
+              type="text"
+              placeholder="Tìm kiếm mã nguồn..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white border focus:border-primary-500 rounded-full text-sm outline-none transition-all"
@@ -78,7 +144,7 @@ const Header = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           </form>
         </div>
-        
+
         {/* User Actions & Mobile Toggle */}
         <div className="flex items-center gap-4 flex-shrink-0">
           {user ? (
@@ -88,7 +154,7 @@ const Header = () => {
                   <LayoutDashboard size={18} /> Admin Panel
                 </Link>
               )}
-              <div className="h-8 w-px bg-slate-200 mx-1"></div>
+              <div className="h-8 w-px bg-slate-200 mx-1" />
               <div className="text-right">
                 <p className="text-sm font-bold text-slate-900 leading-tight">{user.fullName}</p>
                 <p className="text-xs text-primary-600 font-medium">{user.balance?.toLocaleString()} VNĐ</p>
@@ -104,8 +170,7 @@ const Header = () => {
             </div>
           )}
 
-          {/* Mobile Menu Toggle Button */}
-          <button 
+          <button
             className="md:hidden p-2 text-slate-600 hover:text-primary-600 transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
@@ -118,9 +183,9 @@ const Header = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-slate-200 bg-white px-4 py-4 space-y-4 shadow-lg absolute w-full left-0">
           <form onSubmit={handleSearch} className="relative w-full">
-            <input 
-              type="text" 
-              placeholder="Tìm kiếm mã nguồn..." 
+            <input
+              type="text"
+              placeholder="Tìm kiếm mã nguồn..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-slate-100 border border-transparent focus:border-primary-500 rounded-xl text-sm outline-none"
@@ -128,16 +193,45 @@ const Header = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           </form>
 
-          <nav className="flex flex-col gap-2">
-            {navLinks.map(link => (
-              <Link 
-                key={link.path} 
-                to={link.path}
-                className={`p-3 rounded-lg text-sm font-medium ${location.pathname === link.path ? 'bg-primary-50 text-primary-600' : 'text-slate-600 hover:bg-slate-50'}`}
+          <nav className="flex flex-col gap-1">
+            <Link
+              to="/"
+              className={`p-3 rounded-lg text-sm font-medium ${location.pathname === '/' ? 'bg-primary-50 text-primary-600' : 'text-slate-600 hover:bg-slate-50'}`}
+            >
+              Trang chủ
+            </Link>
+
+            {/* Sản phẩm + toggle danh mục trên mobile */}
+            <div>
+              <button
+                onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                className={`w-full flex items-center justify-between p-3 rounded-lg text-sm font-medium ${location.pathname === '/products' ? 'bg-primary-50 text-primary-600' : 'text-slate-600 hover:bg-slate-50'}`}
               >
-                {link.name}
-              </Link>
-            ))}
+                Sản phẩm
+                <ChevronDown size={16} className={`transition-transform ${isCategoryOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isCategoryOpen && (
+                <div className="ml-3 mt-1 space-y-0.5 border-l-2 border-primary-100 pl-3">
+                  <Link
+                    to="/products"
+                    className="block py-2 px-2 text-sm font-semibold text-slate-700 hover:text-primary-600 rounded-lg hover:bg-slate-50"
+                  >
+                    Tất cả sản phẩm
+                  </Link>
+                  {siteConfig.categories.map((cat) => (
+                    <Link
+                      key={cat}
+                      to={`/products?category=${encodeURIComponent(cat)}`}
+                      className="flex items-center gap-2 py-2 px-2 text-sm text-slate-600 hover:text-primary-600 rounded-lg hover:bg-slate-50"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary-400 flex-shrink-0" />
+                      {cat}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </nav>
 
           <div className="pt-4 border-t border-slate-100">

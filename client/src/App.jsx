@@ -11,12 +11,15 @@ import PublicLayout from './layouts/PublicLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminSources from './pages/admin/AdminSources';
 import AdminUsers from './pages/admin/AdminUsers';
+import AdminCoupons from './pages/admin/AdminCoupons';
 import ScrollToTop from './components/ScrollToTop';
+import FloatingActions from './components/FloatingActions';
 
 function App() {
   return (
     <Router>
       <ScrollToTop />
+      <FloatingActions />
       <Routes>
         {/* Auth Routes */}
         <Route element={<PublicLayout />}>
@@ -37,6 +40,7 @@ function App() {
             <Route index element={<AdminDashboard />} />
             <Route path="sources" element={<AdminSources />} />
             <Route path="users" element={<AdminUsers />} />
+            <Route path="coupons" element={<AdminCoupons />} />
           </Route>
         </Route>
       </Routes>

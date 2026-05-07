@@ -154,7 +154,7 @@ const AdminSources = () => {
                   <tr key={item._id} className="border-b border-slate-100 hover:bg-slate-50">
                     <td className="p-4 flex items-center gap-3">
                       <img
-                        src={item.thumbnail ? `http://localhost:3000${item.thumbnail}` : 'https://via.placeholder.com/150'}
+                        src={item.thumbnail ? `${siteConfig.assetBaseUrl}${item.thumbnail}` : 'https://via.placeholder.com/150'}
                         alt="thumbnail"
                         className="w-12 h-12 rounded-lg object-cover bg-slate-100 flex-shrink-0"
                       />
