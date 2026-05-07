@@ -56,7 +56,7 @@ const updateCoupon = async (id, data) => {
         isActive: Boolean(isActive),
     };
 
-    const coupon = await Coupon.findByIdAndUpdate(id, updatePayload, { new: true });
+    const coupon = await Coupon.findByIdAndUpdate(id, updatePayload, { returnDocument: 'after' });
     if (!coupon) {
         const error = new Error('Không tìm thấy mã giảm giá');
         error.statusCode = 404;

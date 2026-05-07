@@ -1,16 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
-import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, ChevronRight, Tag } from 'lucide-react';
+import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, ChevronRight, Tag, Wallet, ArrowDownCircle, ShoppingBag, Plus } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
 
 const Header = () => {
   const [user, setUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false); // mobile categories
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isProductsHovered, setIsProductsHovered] = useState(false);
+  const [isWalletHovered, setIsWalletHovered] = useState(false);
   const hoverTimeout = useRef(null);
+  const walletTimeout = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -53,6 +55,15 @@ const Header = () => {
 
   const handleMouseLeave = () => {
     hoverTimeout.current = setTimeout(() => setIsProductsHovered(false), 150);
+  };
+
+  const handleWalletEnter = () => {
+    clearTimeout(walletTimeout.current);
+    setIsWalletHovered(true);
+  };
+
+  const handleWalletLeave = () => {
+    walletTimeout.current = setTimeout(() => setIsWalletHovered(false), 150);
   };
 
   return (
@@ -148,17 +159,48 @@ const Header = () => {
         {/* User Actions & Mobile Toggle */}
         <div className="flex items-center gap-4 flex-shrink-0">
           {user ? (
-            <div className="hidden md:flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-3">
               {user.role === 'admin' && (
                 <Link to="/admin" className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors">
-                  <LayoutDashboard size={18} /> Admin Panel
+                  <LayoutDashboard size={18} /> Admin
                 </Link>
               )}
-              <div className="h-8 w-px bg-slate-200 mx-1" />
-              <div className="text-right">
-                <p className="text-sm font-bold text-slate-900 leading-tight">{user.fullName}</p>
-                <p className="text-xs text-primary-600 font-medium">{user.balance?.toLocaleString()} VNĐ</p>
+
+              {/* Wallet Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={handleWalletEnter}
+                onMouseLeave={handleWalletLeave}
+              >
+                <button className="flex items-center gap-2 bg-primary-50 hover:bg-primary-100 border border-primary-100 text-primary-700 px-3 py-1.5 rounded-xl text-sm font-semibold transition-colors">
+                  <Wallet size={16} />
+                  <span>{user.balance?.toLocaleString()}đ</span>
+                  <ChevronDown size={14} className={`transition-transform duration-200 ${isWalletHovered ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* Wallet menu */}
+                <div
+                  className={`absolute top-full right-0 mt-2 w-52 bg-white rounded-2xl border border-slate-200 shadow-xl py-2 transition-all duration-200 ${isWalletHovered ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
+                  onMouseEnter={handleWalletEnter}
+                  onMouseLeave={handleWalletLeave}
+                >
+                  <div className="px-4 py-2.5 border-b border-slate-100">
+                    <p className="text-xs text-slate-400">Số dư tài khoản</p>
+                    <p className="text-base font-extrabold text-primary-600">{user.balance?.toLocaleString()}đ</p>
+                  </div>
+                  <Link to="/topup" className="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-primary-700 hover:bg-primary-50 transition-colors">
+                    <Plus size={16} className="text-primary-500" /> Nạp tiền
+                  </Link>
+                  <div className="h-px bg-slate-100 mx-3" />
+                  <Link to="/topup" className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+                    <ArrowDownCircle size={16} className="text-slate-400" /> Lịch sử nạp tiền
+                  </Link>
+                  <Link to="/history/purchase" className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+                    <ShoppingBag size={16} className="text-slate-400" /> Lịch sử mua hàng
+                  </Link>
+                </div>
               </div>
+
               <button onClick={handleLogout} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors" title="Đăng xuất">
                 <LogOut size={20} />
               </button>
@@ -237,17 +279,44 @@ const Header = () => {
           <div className="pt-4 border-t border-slate-100">
             {user ? (
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                {/* User info + balance */}
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
                   <div>
                     <p className="text-sm font-bold text-slate-900">{user.fullName}</p>
-                    <p className="text-xs text-primary-600 font-medium mt-1">Số dư: {user.balance?.toLocaleString()} VNĐ</p>
+                    <p className="text-xs text-primary-600 font-semibold mt-0.5">Số dư: {user.balance?.toLocaleString()}đ</p>
                   </div>
-                  <button onClick={handleLogout} className="p-2 text-red-500 bg-red-50 rounded-lg">
+                  <button onClick={handleLogout} className="p-2 text-red-500 bg-red-50 rounded-lg flex-shrink-0">
                     <LogOut size={20} />
                   </button>
                 </div>
+
+                {/* Wallet actions */}
+                <div className="grid grid-cols-3 gap-2">
+                  <Link
+                    to="/topup"
+                    className="flex flex-col items-center gap-1 p-3 bg-primary-50 hover:bg-primary-100 text-primary-700 rounded-xl transition-colors text-center"
+                  >
+                    <Plus size={18} />
+                    <span className="text-xs font-semibold">Nạp tiền</span>
+                  </Link>
+                  <Link
+                    to="/topup"
+                    className="flex flex-col items-center gap-1 p-3 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl transition-colors text-center"
+                  >
+                    <ArrowDownCircle size={18} />
+                    <span className="text-xs font-medium">Lịch sử nạp</span>
+                  </Link>
+                  <Link
+                    to="/history/purchase"
+                    className="flex flex-col items-center gap-1 p-3 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl transition-colors text-center"
+                  >
+                    <ShoppingBag size={18} />
+                    <span className="text-xs font-medium">Đã mua</span>
+                  </Link>
+                </div>
+
                 {user.role === 'admin' && (
-                  <Link to="/admin" className="flex items-center justify-center gap-2 w-full p-3 bg-slate-900 text-white rounded-lg text-sm font-medium">
+                  <Link to="/admin" className="flex items-center justify-center gap-2 w-full p-3 bg-slate-900 text-white rounded-xl text-sm font-medium">
                     <LayoutDashboard size={18} /> Đi tới Admin Panel
                   </Link>
                 )}

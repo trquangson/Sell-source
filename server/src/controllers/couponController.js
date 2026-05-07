@@ -54,7 +54,7 @@ exports.validateCoupon = async (req, res) => {
             productId,
             productPrice,
             productCategory,
-            userId: req.user.id,
+            userId: req.user.userId,
         });
 
         res.json({ success: true, data: result });

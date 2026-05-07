@@ -14,6 +14,8 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AdminCoupons from './pages/admin/AdminCoupons';
 import ScrollToTop from './components/ScrollToTop';
 import FloatingActions from './components/FloatingActions';
+import TopUp from './pages/TopUp';
+import PurchaseHistory from './pages/PurchaseHistory';
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/topup" element={<TopUp />} />
+          <Route path="/history/purchase" element={<PurchaseHistory />} />
         </Route>
 
         {/* Admin Routes (Được bảo vệ) */}

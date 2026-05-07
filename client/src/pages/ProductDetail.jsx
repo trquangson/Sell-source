@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
-import { ShoppingCart, CheckCircle2, ChevronLeft, Tag, Loader2, ShoppingBag, XCircle } from 'lucide-react';
+import { ShoppingCart, CheckCircle2, ChevronLeft, Tag, Loader2, ShoppingBag, XCircle, Download, AlertCircle } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [source, setSource] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState('');
@@ -13,22 +14,34 @@ const ProductDetail = () => {
   // Coupon state
   const [couponCode, setCouponCode] = useState('');
   const [couponLoading, setCouponLoading] = useState(false);
-  const [couponResult, setCouponResult] = useState(null); // null | { discountAmount, finalPrice, ... }
+  const [couponResult, setCouponResult] = useState(null);
   const [couponError, setCouponError] = useState('');
 
+  // Purchase state
+  const [alreadyPurchased, setAlreadyPurchased] = useState(false);
+  const [purchaseLoading, setPurchaseLoading] = useState(false);
+  const [purchaseSuccess, setPurchaseSuccess] = useState(false);
+  const [purchaseError, setPurchaseError] = useState('');
+
   useEffect(() => {
-    const fetchSourceDetail = async () => {
+    const fetchAll = async () => {
       try {
         const res = await axiosClient.get(`/sources/${id}`);
         setSource(res.data);
         setActiveImage(res.data.thumbnail);
+
+        // Kiểm tra đã mua chưa (không cần auth — nếu 401 thì chưa đăng nhập, bỏ qua)
+        try {
+          const checkRes = await axiosClient.get(`/purchases/check/${id}`);
+          setAlreadyPurchased(checkRes.purchased || false);
+        } catch { /* chưa đăng nhập */ }
       } catch (error) {
         console.error('Lỗi lấy chi tiết sản phẩm', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchSourceDetail();
+    fetchAll();
   }, [id]);
 
   const handleApplyCoupon = async () => {
@@ -44,10 +57,8 @@ const ProductDetail = () => {
         productPrice: source.price,
         productCategory: source.category
       });
-      // axiosClient interceptor unwraps response.data, nên res = { success, data: {...} }
       setCouponResult(res.data);
     } catch (error) {
-      // axiosClient interceptor reject với response body, nên error = { success, message }
       setCouponError(error.message || 'Mã giảm giá không hợp lệ');
     } finally {
       setCouponLoading(false);
@@ -58,6 +69,34 @@ const ProductDetail = () => {
     setCouponResult(null);
     setCouponError('');
     setCouponCode('');
+  };
+
+  const handlePurchase = async () => {
+    setPurchaseLoading(true);
+    setPurchaseError('');
+    try {
+      await axiosClient.post('/purchases', {
+        sourceId: source._id,
+        couponCode: couponResult ? couponResult.code : null
+      });
+      setAlreadyPurchased(true);
+      setPurchaseSuccess(true);
+    } catch (error) {
+      const msg = error.message || 'Có lỗi xảy ra';
+      if (msg.includes('Số dư') || msg.includes('không đủ')) {
+        setPurchaseError(`${msg} - Vui lòng nạp thêm tiền.`);
+      } else if (msg.includes('đăng nhập') || msg.includes('phiên') || msg.includes('hết hạn')) {
+        setPurchaseError('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+      } else {
+        setPurchaseError(msg);
+      }
+    } finally {
+      setPurchaseLoading(false);
+    }
+  };
+
+  const handleDownload = () => {
+    window.open(`${siteConfig.apiBaseUrl}/purchases/download/${id}`, '_blank');
   };
 
   if (loading) return (
@@ -106,7 +145,6 @@ const ProductDetail = () => {
           {/* Cột Phải: Thông tin & Mua hàng */}
           <div className="w-full md:w-2/5 p-8 flex flex-col">
             <div className="flex-1">
-              {/* Danh mục + lượt mua */}
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-semibold uppercase tracking-wider text-primary-600 bg-primary-50 px-3 py-1 rounded-full border border-primary-100">
                   {source.category || 'Khác'}
@@ -121,101 +159,119 @@ const ProductDetail = () => {
 
               <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-5 leading-tight">{source.title}</h1>
 
-              {/* Hiển thị giá */}
+              {/* Giá */}
               <div className="bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl mb-6">
                 <p className="text-xs text-slate-400 font-medium mb-1 uppercase tracking-wider">Giá sản phẩm</p>
                 {couponResult ? (
                   <div className="flex items-baseline gap-3">
-                    <span className="text-3xl font-extrabold text-primary-600">
-                      {couponResult.finalPrice.toLocaleString()}đ
-                    </span>
-                    <span className="text-lg text-slate-400 line-through">
-                      {source.price.toLocaleString()}đ
-                    </span>
+                    <span className="text-3xl font-extrabold text-primary-600">{couponResult.finalPrice.toLocaleString()}đ</span>
+                    <span className="text-lg text-slate-400 line-through">{source.price.toLocaleString()}đ</span>
                     <span className="text-xs font-bold text-green-600 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">
                       -{couponResult.discountAmount.toLocaleString()}đ
                     </span>
                   </div>
                 ) : (
-                  <span className="text-3xl font-extrabold text-slate-900">
-                    {source.price.toLocaleString()}đ
-                  </span>
+                  <span className="text-3xl font-extrabold text-slate-900">{source.price.toLocaleString()}đ</span>
                 )}
               </div>
 
               <div className="prose prose-slate prose-sm mb-6">
                 <h3 className="text-base font-bold text-slate-800 mb-2">Mô tả sản phẩm</h3>
-                <p className="text-slate-600 whitespace-pre-line leading-relaxed text-sm">
-                  {source.description}
-                </p>
+                <p className="text-slate-600 whitespace-pre-line leading-relaxed text-sm">{source.description}</p>
               </div>
 
               <ul className="space-y-2.5 mb-6">
-                <li className="flex items-center text-sm text-slate-600">
-                  <CheckCircle2 size={17} className="text-green-500 mr-2 flex-shrink-0" /> Hỗ trợ cài đặt miễn phí
-                </li>
-                <li className="flex items-center text-sm text-slate-600">
-                  <CheckCircle2 size={17} className="text-green-500 mr-2 flex-shrink-0" /> Cập nhật trọn đời
-                </li>
-                <li className="flex items-center text-sm text-slate-600">
-                  <CheckCircle2 size={17} className="text-green-500 mr-2 flex-shrink-0" /> Đầy đủ mã nguồn và database
-                </li>
+                <li className="flex items-center text-sm text-slate-600"><CheckCircle2 size={17} className="text-green-500 mr-2 flex-shrink-0" /> Hỗ trợ cài đặt miễn phí</li>
+                <li className="flex items-center text-sm text-slate-600"><CheckCircle2 size={17} className="text-green-500 mr-2 flex-shrink-0" /> Cập nhật trọn đời</li>
+                <li className="flex items-center text-sm text-slate-600"><CheckCircle2 size={17} className="text-green-500 mr-2 flex-shrink-0" /> Đầy đủ mã nguồn và database</li>
               </ul>
             </div>
 
-            {/* Khu vực mua hàng */}
+            {/* Khu vực thanh toán */}
             <div className="pt-6 border-t border-slate-100 space-y-4">
-              {/* Ô nhập mã giảm giá */}
-              {!couponResult ? (
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-1.5">
-                    <Tag size={15} /> Mã giảm giá
-                  </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={couponCode}
-                      onChange={(e) => {
-                        setCouponCode(e.target.value.toUpperCase());
-                        setCouponError('');
-                      }}
-                      onKeyDown={(e) => e.key === 'Enter' && handleApplyCoupon()}
-                      placeholder="Nhập mã của bạn..."
-                      className="flex-1 px-4 py-2.5 border border-slate-200 bg-slate-50 rounded-xl text-sm font-mono tracking-wider focus:outline-none focus:border-primary-500 focus:bg-white transition-all"
-                    />
-                    <button
-                      onClick={handleApplyCoupon}
-                      disabled={couponLoading || !couponCode.trim()}
-                      className="px-4 py-2.5 bg-slate-900 hover:bg-slate-700 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
-                    >
-                      {couponLoading ? <Loader2 size={16} className="animate-spin" /> : 'Áp dụng'}
-                    </button>
-                  </div>
-                  {couponError && (
-                    <p className="mt-2 text-sm text-red-600 flex items-center gap-1.5">
-                      <XCircle size={15} /> {couponError}
-                    </p>
+
+              {/* Đã mua hiện nút download */}
+              {alreadyPurchased ? (
+                <div className="space-y-3">
+                  {purchaseSuccess && (
+                    <div className="flex items-center gap-2 text-green-700 bg-green-50 border border-green-200 px-4 py-3 rounded-xl text-sm">
+                      <CheckCircle2 size={16} /> Mua thành công! File đã sẵn sàng để tải.
+                    </div>
                   )}
+                  <button
+                    onClick={handleDownload}
+                    className="w-full py-4 text-lg font-bold flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white rounded-xl shadow-lg shadow-green-500/30 hover:-translate-y-0.5 transition-all"
+                  >
+                    <Download size={22} /> Tải xuống mã nguồn
+                  </button>
+                  <p className="text-center text-xs text-slate-400">Bạn đã sở hữu sản phẩm này</p>
                 </div>
               ) : (
-                <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3">
-                  <div className="flex items-center gap-2 text-green-700">
-                    <CheckCircle2 size={18} />
-                    <span className="text-sm font-semibold">Mã <span className="font-mono">{couponResult.code}</span> đã được áp dụng</span>
-                  </div>
-                  <button onClick={handleRemoveCoupon} className="text-slate-400 hover:text-red-500 transition-colors">
-                    <XCircle size={18} />
-                  </button>
-                </div>
-              )}
+                <>
+                  {/* Mã giảm giá */}
+                  {!couponResult ? (
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-1.5">
+                        <Tag size={15} /> Mã giảm giá
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponCode}
+                          onChange={(e) => { setCouponCode(e.target.value.toUpperCase()); setCouponError(''); }}
+                          onKeyDown={(e) => e.key === 'Enter' && handleApplyCoupon()}
+                          placeholder="Nhập mã của bạn..."
+                          className="flex-1 px-4 py-2.5 border border-slate-200 bg-slate-50 rounded-xl text-sm font-mono tracking-wider focus:outline-none focus:border-primary-500 focus:bg-white transition-all"
+                        />
+                        <button
+                          onClick={handleApplyCoupon}
+                          disabled={couponLoading || !couponCode.trim()}
+                          className="px-4 py-2.5 bg-slate-900 hover:bg-slate-700 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                        >
+                          {couponLoading ? <Loader2 size={16} className="animate-spin" /> : 'Áp dụng'}
+                        </button>
+                      </div>
+                      {couponError && (
+                        <p className="mt-2 text-sm text-red-600 flex items-center gap-1.5"><XCircle size={15} /> {couponError}</p>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3">
+                      <div className="flex items-center gap-2 text-green-700">
+                        <CheckCircle2 size={18} />
+                        <span className="text-sm font-semibold">Mã <span className="font-mono">{couponResult.code}</span> đã được áp dụng</span>
+                      </div>
+                      <button onClick={handleRemoveCoupon} className="text-slate-400 hover:text-red-500 transition-colors"><XCircle size={18} /></button>
+                    </div>
+                  )}
 
-              <button className="btn-primary py-4 text-lg w-full flex items-center justify-center gap-2 shadow-lg shadow-primary-500/30 hover:shadow-primary-500/40 transform hover:-translate-y-0.5 transition-all">
-                <ShoppingCart size={22} />
-                Mua ngay - {displayPrice.toLocaleString()}đ
-              </button>
-              <p className="text-center text-xs text-slate-400">
-                Giao dịch an toàn và bảo mật
-              </p>
+                  {/* Lỗi mua hàng */}
+                  {purchaseError && (
+                    <div className="flex items-start gap-2 text-red-700 bg-red-50 border border-red-200 px-4 py-3 rounded-xl text-sm">
+                      <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p>{purchaseError}</p>
+                        {purchaseError.includes('nạp') && (
+                          <Link to="/topup" className="font-semibold underline mt-1 inline-block">Nạp tiền ngay</Link>
+                        )}
+                        {purchaseError.includes('đăng nhập') && (
+                          <Link to="/login" className="font-semibold underline mt-1 inline-block">Đăng nhập</Link>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  <button
+                    onClick={handlePurchase}
+                    disabled={purchaseLoading}
+                    className="btn-primary py-4 text-lg w-full flex items-center justify-center gap-2 shadow-lg shadow-primary-500/30 hover:shadow-primary-500/40 transform hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
+                  >
+                    {purchaseLoading ? <Loader2 size={22} className="animate-spin" /> : <ShoppingCart size={22} />}
+                    {purchaseLoading ? 'Đang xử lý...' : `Mua ngay - ${displayPrice.toLocaleString()}đ`}
+                  </button>
+                  <p className="text-center text-xs text-slate-400">Giao dịch an toàn và bảo mật</p>
+                </>
+              )}
             </div>
           </div>
         </div>
