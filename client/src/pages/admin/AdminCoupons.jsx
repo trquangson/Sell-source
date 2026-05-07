@@ -148,7 +148,7 @@ const AdminCoupons = () => {
     }
   };
 
-  const formatDate = (d) => d ? new Date(d).toLocaleDateString('vi-VN') : '—';
+  const formatDate = (d) => d ? new Date(d).toLocaleDateString('vi-VN') : '-';
 
   return (
     <div>
@@ -204,11 +204,10 @@ const AdminCoupons = () => {
                     )}
                   </td>
                   <td className="p-4">
-                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${
-                      coupon.scope === 'all' ? 'bg-blue-50 text-blue-700 border-blue-100' :
+                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${coupon.scope === 'all' ? 'bg-blue-50 text-blue-700 border-blue-100' :
                       coupon.scope === 'categories' ? 'bg-orange-50 text-orange-700 border-orange-100' :
-                      'bg-teal-50 text-teal-700 border-teal-100'
-                    }`}>
+                        'bg-teal-50 text-teal-700 border-teal-100'
+                      }`}>
                       {SCOPES.find(s => s.value === coupon.scope)?.label}
                     </span>
                     {coupon.scope === 'categories' && coupon.applicableCategories?.length > 0 && (
@@ -274,7 +273,7 @@ const AdminCoupons = () => {
 
                 {formData.discountType === 'percentage' && (
                   <div className="col-span-2">
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Giảm tối đa (đ) <span className="text-slate-400 font-normal">— tùy chọn</span></label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Giảm tối đa (đ) <span className="text-slate-400 font-normal">- tùy chọn</span></label>
                     <input name="maxDiscount" type="number" min="0" value={formData.maxDiscount} onChange={handleChange} placeholder="Bỏ trống = không giới hạn" className="input-field" />
                   </div>
                 )}
@@ -320,7 +319,7 @@ const AdminCoupons = () => {
                           <button type="button" key={product._id} onClick={() => toggleProduct(product._id)}
                             className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-slate-50 ${selected ? 'bg-primary-50' : ''}`}>
                             <div className={`w-4 h-4 rounded border-2 flex-shrink-0 flex items-center justify-center ${selected ? 'bg-primary-600 border-primary-600' : 'border-slate-300'}`}>
-                              {selected && <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 12 12"><path d="M10 3L5 8.5 2 5.5l-.7.7 3.7 3.7 5.7-5.7z"/></svg>}
+                              {selected && <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 12 12"><path d="M10 3L5 8.5 2 5.5l-.7.7 3.7 3.7 5.7-5.7z" /></svg>}
                             </div>
                             <div className="min-w-0">
                               <p className={`text-sm font-medium truncate ${selected ? 'text-primary-700' : 'text-slate-800'}`}>{product.title}</p>
@@ -347,7 +346,7 @@ const AdminCoupons = () => {
                 </div>
 
                 <div className="col-span-2">
-                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">Ngày hết hạn <span className="text-slate-400 font-normal">— tùy chọn</span></label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">Ngày hết hạn <span className="text-slate-400 font-normal">- tùy chọn</span></label>
                   <input name="expiryDate" type="date" value={formData.expiryDate} onChange={handleChange} className="input-field" />
                 </div>
 
