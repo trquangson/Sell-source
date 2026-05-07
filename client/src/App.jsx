@@ -12,6 +12,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminSources from './pages/admin/AdminSources';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminCoupons from './pages/admin/AdminCoupons';
+import AdminSettings from './pages/admin/AdminSettings';
 import ScrollToTop from './components/ScrollToTop';
 import FloatingActions from './components/FloatingActions';
 import TopUp from './pages/TopUp';
@@ -45,6 +46,7 @@ function App() {
             <Route path="sources" element={<AdminSources />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="coupons" element={<AdminCoupons />} />
+            <Route path="settings" element={<AdminSettings />} />
           </Route>
         </Route>
       </Routes>

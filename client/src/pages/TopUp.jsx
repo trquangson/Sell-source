@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
 import { Copy, CheckCheck, ArrowDownCircle, Wallet, Clock, ExternalLink } from 'lucide-react';
-import siteConfig from '../config/siteConfig';
+import { useSite } from '../context/SiteContext';
 
 const BANK_CODES = {
   'MB Bank': 'MB',
@@ -23,7 +23,8 @@ const TopUp = () => {
   const [history, setHistory] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(true);
 
-  const { bankName, accountNumber, accountHolder, transferPrefix } = siteConfig.payment;
+  const { config } = useSite();
+  const { bankName, accountNumber, accountHolder, transferPrefix } = config.payment;
   const bankCode = BANK_CODES[bankName] || 'MB';
 
   useEffect(() => {

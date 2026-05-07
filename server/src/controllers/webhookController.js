@@ -1,4 +1,5 @@
 const webhookService = require('../services/webhookService');
+const settingService = require('../services/settingService');
 
 /**
  * POST /api/webhook/sepay
@@ -6,7 +7,12 @@ const webhookService = require('../services/webhookService');
  */
 exports.sePayWebhook = async (req, res) => {
     const apiKey = req.headers['authorization'];
-    if (apiKey !== `Apikey ${process.env.SEPAY_WEBHOOK_APIKEY}`) {
+
+    // Đọc key từ DB trước, fallback sang env
+    const storedKey = await settingService.getSetting('payment.sepayWebhookApiKey');
+    const expectedKey = storedKey || process.env.SEPAY_WEBHOOK_APIKEY;
+
+    if (!expectedKey || apiKey !== `Apikey ${expectedKey}`) {
         return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
 

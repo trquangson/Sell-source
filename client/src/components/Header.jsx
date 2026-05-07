@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
 import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, ChevronRight, Tag, Wallet, ArrowDownCircle, ShoppingBag, Plus } from 'lucide-react';
-import siteConfig from '../config/siteConfig';
+import { useSite } from '../context/SiteContext';
 
 const Header = () => {
   const [user, setUser] = useState(null);
@@ -15,6 +15,7 @@ const Header = () => {
   const walletTimeout = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const { config } = useSite();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -72,7 +73,7 @@ const Header = () => {
 
         {/* Logo & Desktop Nav */}
         <div className="flex items-center gap-8 lg:gap-12">
-          <Link to="/" className="text-2xl font-bold text-primary-600 tracking-tight flex-shrink-0">{siteConfig.name}</Link>
+          <Link to="/" className="text-2xl font-bold text-primary-600 tracking-tight flex-shrink-0">{config.name}</Link>
 
           <nav className="hidden md:flex gap-8">
             {/* Link Trang chủ thường */}
@@ -127,7 +128,7 @@ const Header = () => {
                 <div className="h-px bg-slate-100 mx-3 my-1" />
 
                 {/* Từng danh mục */}
-                {siteConfig.categories.map((cat) => (
+                {config.categories.map((cat) => (
                   <Link
                     key={cat}
                     to={`/products?category=${encodeURIComponent(cat)}`}
@@ -261,7 +262,7 @@ const Header = () => {
                   >
                     Tất cả sản phẩm
                   </Link>
-                  {siteConfig.categories.map((cat) => (
+                  {config.categories.map((cat) => (
                     <Link
                       key={cat}
                       to={`/products?category=${encodeURIComponent(cat)}`}

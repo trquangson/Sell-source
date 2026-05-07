@@ -3,10 +3,17 @@ const router = express.Router();
 const sourceController = require('../controllers/sourceController');
 const userController = require('../controllers/userController');
 const couponController = require('../controllers/couponController');
+const dashboardController = require('../controllers/dashboardController');
+const settingController = require('../controllers/settingController');
 const { authenticate, isAdmin } = require('../middlewares/authMiddleware');
 const { uploadSourceFiles } = require('../middlewares/uploadMiddleware');
 
 router.use(authenticate, isAdmin);
+
+router.get('/dashboard', dashboardController.getDashboardStats);
+
+router.get('/settings', settingController.getSettings);
+router.put('/settings', settingController.updateSettings);
 
 router.get('/sources', sourceController.getAllSourcesForAdmin);
 router.post('/sources', uploadSourceFiles, sourceController.createSource);
