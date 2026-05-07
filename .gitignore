@@ -3,4 +3,5 @@ node_modules
 server/public/uploads/thumbnails/*
 !server/public/uploads/thumbnails/.gitkeep
 server/storage/sources/*
-!server/storage/sources/.gitkeep
+!server/storage/sources/.gitkeeprulegencode.md 
+.agents
