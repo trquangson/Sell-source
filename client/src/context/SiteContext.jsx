@@ -14,15 +14,14 @@ export const SiteProvider = ({ children }) => {
     const fetchSettings = async () => {
       try {
         const res = await axiosClient.get('/public/settings');
-        if (res.data && res.data.success) {
-          const dbSettings = res.data.data;
-          // Deep clone cấu hình mặc định để không mutate bản gốc
+        if (res && res.success) {
+          const dbSettings = res.data || {};
           const mergedConfig = JSON.parse(JSON.stringify(siteConfig));
-          
+
           // Merge thông tin chung
           if (dbSettings['site.name']) mergedConfig.name = dbSettings['site.name'];
           if (dbSettings['site.description']) mergedConfig.description = dbSettings['site.description'];
-          
+
           // Cập nhật Document Title và Favicon (chỉ tác dụng trên client)
           if (dbSettings['site.name']) document.title = dbSettings['site.name'];
           if (dbSettings['site.favicon']) {

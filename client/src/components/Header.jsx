@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
-import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, ChevronRight, Tag, Wallet, ArrowDownCircle, ShoppingBag, Plus } from 'lucide-react';
+import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, ChevronRight, Tag, Wallet, ArrowDownCircle, ShoppingBag, Plus, User as UserIcon } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
 
 const Header = () => {
@@ -103,9 +103,8 @@ const Header = () => {
 
               {/* Dropdown */}
               <div
-                className={`absolute top-full left-0 mt-2 w-52 bg-white rounded-2xl border border-slate-200 shadow-xl py-2 transition-all duration-200 ${
-                  isProductsHovered ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
-                }`}
+                className={`absolute top-full left-0 mt-2 w-52 bg-white rounded-2xl border border-slate-200 shadow-xl py-2 transition-all duration-200 ${isProductsHovered ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
+                  }`}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
@@ -140,6 +139,14 @@ const Header = () => {
                 ))}
               </div>
             </div>
+
+            {/* Link Liên hệ */}
+            <Link
+              to="/contact"
+              className={`text-base font-semibold transition-colors ${location.pathname === '/contact' ? 'text-primary-600' : 'text-slate-600 hover:text-primary-600'}`}
+            >
+              Liên hệ
+            </Link>
           </nav>
         </div>
 
@@ -166,6 +173,15 @@ const Header = () => {
                   <LayoutDashboard size={18} /> Admin
                 </Link>
               )}
+
+              {/* Profile Avatar */}
+              <Link 
+                to="/profile" 
+                className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-sm font-bold text-slate-600 hover:bg-primary-100 hover:text-primary-700 transition-colors shadow-sm border border-slate-200"
+                title="Hồ sơ cá nhân"
+              >
+                {user.username.charAt(0).toUpperCase()}
+              </Link>
 
               {/* Wallet Dropdown */}
               <div
@@ -275,6 +291,13 @@ const Header = () => {
                 </div>
               )}
             </div>
+
+            <Link
+              to="/contact"
+              className={`p-3 rounded-lg text-sm font-medium ${location.pathname === '/contact' ? 'bg-primary-50 text-primary-600' : 'text-slate-600 hover:bg-slate-50'}`}
+            >
+              Liên hệ
+            </Link>
           </nav>
 
           <div className="pt-4 border-t border-slate-100">
@@ -283,7 +306,7 @@ const Header = () => {
                 {/* User info + balance */}
                 <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
                   <div>
-                    <p className="text-sm font-bold text-slate-900">{user.fullName}</p>
+                    <Link to="/profile" className="text-sm font-bold text-slate-900 hover:text-primary-600 hover:underline">{user.fullName}</Link>
                     <p className="text-xs text-primary-600 font-semibold mt-0.5">Số dư: {user.balance?.toLocaleString()}đ</p>
                   </div>
                   <button onClick={handleLogout} className="p-2 text-red-500 bg-red-50 rounded-lg flex-shrink-0">

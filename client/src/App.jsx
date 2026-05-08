@@ -13,6 +13,8 @@ import AdminSources from './pages/admin/AdminSources';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminCoupons from './pages/admin/AdminCoupons';
 import AdminSettings from './pages/admin/AdminSettings';
+import Contact from './pages/Contact';
+import Profile from './pages/Profile';
 import ScrollToTop from './components/ScrollToTop';
 import FloatingActions from './components/FloatingActions';
 import TopUp from './pages/TopUp';
@@ -35,8 +37,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/topup" element={<TopUp />} />
           <Route path="/history/purchase" element={<PurchaseHistory />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
 
         {/* Admin Routes (Được bảo vệ) */}

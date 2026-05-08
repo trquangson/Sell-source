@@ -5,6 +5,7 @@ const couponRoutes = require('./couponRoutes');
 const paymentRoutes = require('./paymentRoutes');
 const webhookRoutes = require('./webhookRoutes');
 const settingRoutes = require('./settingRoutes');
+const profileRoutes = require('./profileRoutes');
 
 module.exports = (app) => {
     app.use('/api/auth', authRoutes);
@@ -14,4 +15,5 @@ module.exports = (app) => {
     app.use('/api', paymentRoutes);
     app.use('/api', webhookRoutes);
     app.use('/api', settingRoutes);
+    app.use('/api/profile', profileRoutes);
 }
