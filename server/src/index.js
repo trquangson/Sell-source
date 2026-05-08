@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 const database = require("./config/database");
 
 app.use(cors({
-    origin: 'http://localhost:5173', // Domain của frontend
+    origin: process.env.CLIENT_URL || 'http://localhost:5173', // Domain của frontend
     credentials: true // Cho phép gửi cookie
 }));
 app.use(cookieParser());
@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server đang chạy tại http://localhost:${PORT}`);
+    console.log(`Server đang chạy tại port:${PORT}`);
 });
 
 database.connect()

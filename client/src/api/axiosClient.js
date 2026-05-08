@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-    baseURL: 'http://localhost:3000/api', // Tùy chỉnh theo port backend
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api', // Tùy chỉnh theo port backend
     withCredentials: true, // Quan trọng: Cho phép gửi và nhận cookie
     headers: {
         'Content-Type': 'application/json'

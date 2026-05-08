@@ -1,4 +1,5 @@
 .env
+.env.production
 node_modules
 server/public/uploads/thumbnails/*
 !server/public/uploads/thumbnails/.gitkeep

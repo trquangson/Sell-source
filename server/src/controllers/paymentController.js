@@ -52,7 +52,9 @@ exports.download = async (req, res) => {
             return res.status(404).json({ success: false, message: 'File không tìm thấy trên server' });
         }
 
-        const filename = `${source.title.replace(/[^a-z0-9]/gi, '_')}.zip`;
+        const ext = path.extname(source.filePath);
+        const safeTitle = source.title.replace(/[^a-z0-9]/gi, '_');
+        const filename = ext ? `${safeTitle}${ext}` : safeTitle;
         res.download(absolutePath, filename);
     } catch (error) {
         res.status(error.statusCode || 500).json({ success: false, message: error.message });
