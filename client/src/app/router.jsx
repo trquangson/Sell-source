@@ -14,7 +14,7 @@ import AdminUsers from '@/pages/admin/AdminUsers';
 import AdminCoupons from '@/pages/admin/AdminCoupons';
 import AdminSettings from '@/pages/admin/AdminSettings';
 import Contact from '@/pages/Contact';
-import Profile from '@/pages/Profile';
+import ProfilePage from '@/pages/ProfilePage';
 import ScrollToTop from '@/shared/components/ScrollToTop';
 import FloatingActions from '@/shared/components/FloatingActions';
 import TopUp from '@/pages/TopUp';
@@ -40,7 +40,7 @@ export default function AppRouter() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/topup" element={<TopUp />} />
           <Route path="/history/purchase" element={<PurchaseHistory />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
         {/* Admin Routes (Được bảo vệ) */}
