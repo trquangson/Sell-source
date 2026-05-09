@@ -2,32 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '@/features/admin/api/adminApi';
 import {
-  DollarSign, FileCode2, Users, ShoppingCart,
-  TrendingUp, ArrowDownCircle, ArrowUpCircle, Loader2, BarChart2
+  ArrowDownCircle, ArrowUpCircle, BarChart2
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import siteConfig from '../../config/siteConfig';
+import DashboardStats from '@/features/admin/components/DashboardStats';
 
 const fmt = (n) => Number(n || 0).toLocaleString('vi-VN') + 'đ';
 
-const StatCard = ({ name, value, icon, colorClass, sub }) => (
-  <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center gap-4">
-    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${colorClass}`}>
-      {icon}
-    </div>
-    <div className="min-w-0">
-      <p className="text-sm font-medium text-slate-500 truncate">{name}</p>
-      <p className="text-xl font-bold text-slate-900 truncate">{value}</p>
-      {sub && <p className="text-xs text-slate-400 mt-0.5">{sub}</p>}
-    </div>
-  </div>
-);
 
-const Skeleton = () => (
-  <div className="animate-pulse bg-slate-200 rounded-xl h-8 w-3/4" />
-);
 
-const AdminDashboard = () => {
+const AdminDashboardPage = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -38,62 +23,13 @@ const AdminDashboard = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const stats = data ? [
-    {
-      name: 'Doanh thu hôm nay',
-      value: fmt(data.stats.todayRevenue),
-      icon: <TrendingUp size={22} className="text-emerald-600" />,
-      colorClass: 'bg-emerald-100',
-    },
-    {
-      name: 'Tổng doanh thu',
-      value: fmt(data.stats.totalRevenue),
-      icon: <DollarSign size={22} className="text-green-600" />,
-      colorClass: 'bg-green-100',
-      sub: `${data.stats.totalOrders} đơn hàng`,
-    },
-    {
-      name: 'Tổng nạp tiền',
-      value: fmt(data.stats.totalDeposit),
-      icon: <ArrowDownCircle size={22} className="text-blue-600" />,
-      colorClass: 'bg-blue-100',
-    },
-    {
-      name: 'Sản phẩm',
-      value: data.stats.totalProducts,
-      icon: <FileCode2 size={22} className="text-violet-600" />,
-      colorClass: 'bg-violet-100',
-    },
-    {
-      name: 'Người dùng',
-      value: data.stats.totalUsers,
-      icon: <Users size={22} className="text-orange-600" />,
-      colorClass: 'bg-orange-100',
-    },
-    {
-      name: 'Đơn hàng',
-      value: data.stats.totalOrders,
-      icon: <ShoppingCart size={22} className="text-pink-600" />,
-      colorClass: 'bg-pink-100',
-    },
-  ] : [];
+
 
   return (
     <div className="space-y-6">
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        {loading
-          ? Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-              <div className="w-12 h-12 rounded-xl bg-slate-100 animate-pulse mb-3" />
-              <div className="h-3 bg-slate-100 rounded animate-pulse mb-2 w-3/4" />
-              <div className="h-5 bg-slate-100 rounded animate-pulse w-1/2" />
-            </div>
-          ))
-          : stats.map((s, i) => <StatCard key={i} {...s} />)
-        }
-      </div>
+      <DashboardStats data={data} loading={loading} />
 
       {/* Biểu đồ doanh thu 7 ngày */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 md:p-6">
@@ -226,4 +162,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default AdminDashboardPage;

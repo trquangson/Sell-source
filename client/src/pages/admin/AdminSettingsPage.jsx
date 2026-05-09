@@ -45,7 +45,7 @@ const Toast = ({ message, onClose }) => {
   );
 };
 
-const AdminSettings = () => {
+const AdminSettingsPage = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState({});
@@ -201,4 +201,4 @@ const AdminSettings = () => {
   );
 };
 
-export default AdminSettings;
+export default AdminSettingsPage;

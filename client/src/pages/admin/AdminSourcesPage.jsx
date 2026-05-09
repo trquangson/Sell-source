@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { adminApi } from '@/features/admin/api/adminApi';
 import { Plus, Edit, Trash2, X, Upload, AlertCircle } from 'lucide-react';
 import siteConfig from '../../config/siteConfig';
+import ConfirmModal from '@/shared/components/ConfirmModal';
 
-const AdminSources = () => {
+const AdminSourcesPage = () => {
   const [sources, setSources] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -192,22 +193,13 @@ const AdminSources = () => {
         </div>
       </div>
 
-      {/* Modal Xóa */}
-      {deleteId && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-xl p-6 text-center">
-            <div className="mx-auto w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4">
-              <AlertCircle size={24} className="text-red-600" />
-            </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Xóa Mã Nguồn?</h3>
-            <p className="text-slate-500 text-sm mb-6">Bạn có chắc chắn muốn xóa? Thao tác này sẽ xóa vĩnh viễn cả file trên server và không thể hoàn tác.</p>
-            <div className="flex gap-3 justify-center">
-              <button onClick={() => setDeleteId(null)} className="px-4 py-2 font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors w-full">Hủy</button>
-              <button onClick={confirmDelete} className="px-4 py-2 font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors w-full">Xóa ngay</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        isOpen={!!deleteId}
+        title="Xóa Mã Nguồn?"
+        message="Bạn có chắc chắn muốn xóa? Thao tác này sẽ xóa vĩnh viễn cả file trên server và không thể hoàn tác."
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteId(null)}
+      />
 
       {/* Modal Thêm/Sửa */}
       {isModalOpen && (
@@ -302,4 +294,4 @@ const AdminSources = () => {
   );
 };
 
-export default AdminSources;
+export default AdminSourcesPage;

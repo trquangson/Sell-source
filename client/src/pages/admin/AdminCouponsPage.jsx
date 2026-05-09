@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { adminApi } from '@/features/admin/api/adminApi';
 import { Plus, Edit, Trash2, X, ToggleLeft, ToggleRight, AlertCircle, Tag } from 'lucide-react';
 import siteConfig from '../../config/siteConfig';
+import ConfirmModal from '@/shared/components/ConfirmModal';
 
 const DISCOUNT_TYPES = [
   { value: 'percentage', label: 'Phần trăm (%)' },
@@ -28,7 +29,7 @@ const defaultForm = {
   isActive: true,
 };
 
-const AdminCoupons = () => {
+const AdminCouponsPage = () => {
   const [coupons, setCoupons] = useState([]);
   const [allProducts, setAllProducts] = useState([]); // Danh sách sản phẩm để chọn
   const [loading, setLoading] = useState(true);
@@ -369,24 +370,16 @@ const AdminCoupons = () => {
         </div>
       )}
 
-      {/* Modal Xác nhận xóa */}
-      {deleteId && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-slate-200">
-            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <AlertCircle className="text-red-600" size={24} />
-            </div>
-            <h3 className="text-lg font-bold text-slate-900 text-center mb-2">Xóa mã giảm giá?</h3>
-            <p className="text-sm text-slate-500 text-center mb-6">Hành động này không thể hoàn tác.</p>
-            <div className="flex gap-3">
-              <button onClick={() => setDeleteId(null)} className="flex-1 py-2.5 border border-slate-200 rounded-xl text-slate-600 font-medium hover:bg-slate-50 transition-colors">Hủy</button>
-              <button onClick={handleDelete} className="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold transition-colors">Xóa</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        isOpen={!!deleteId}
+        title="Xóa mã giảm giá?"
+        message="Hành động này không thể hoàn tác."
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteId(null)}
+        confirmText="Xóa"
+      />
     </div>
   );
 };
 
-export default AdminCoupons;
+export default AdminCouponsPage;

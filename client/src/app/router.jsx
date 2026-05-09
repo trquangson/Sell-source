@@ -8,11 +8,11 @@ import ProductDetailPage from '@/pages/ProductDetailPage';
 import AdminRoute from '@/features/auth/components/AdminRoute';
 import AdminLayout from '@/app/layouts/AdminLayout';
 import PublicLayout from '@/app/layouts/PublicLayout';
-import AdminDashboard from '@/pages/admin/AdminDashboard';
-import AdminSources from '@/pages/admin/AdminSources';
-import AdminUsers from '@/pages/admin/AdminUsers';
-import AdminCoupons from '@/pages/admin/AdminCoupons';
-import AdminSettings from '@/pages/admin/AdminSettings';
+import AdminDashboardPage from '@/pages/admin/AdminDashboardPage';
+import AdminSourcesPage from '@/pages/admin/AdminSourcesPage';
+import AdminUsersPage from '@/pages/admin/AdminUsersPage';
+import AdminCouponsPage from '@/pages/admin/AdminCouponsPage';
+import AdminSettingsPage from '@/pages/admin/AdminSettingsPage';
 import Contact from '@/pages/Contact';
 import ProfilePage from '@/pages/ProfilePage';
 import ScrollToTop from '@/shared/components/ScrollToTop';
@@ -46,11 +46,11 @@ export default function AppRouter() {
         {/* Admin Routes (Được bảo vệ) */}
         <Route path="/admin" element={<AdminRoute />}>
           <Route element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="sources" element={<AdminSources />} />
-            <Route path="users" element={<AdminUsers />} />
-            <Route path="coupons" element={<AdminCoupons />} />
-            <Route path="settings" element={<AdminSettings />} />
+            <Route index element={<AdminDashboardPage />} />
+            <Route path="sources" element={<AdminSourcesPage />} />
+            <Route path="users" element={<AdminUsersPage />} />
+            <Route path="coupons" element={<AdminCouponsPage />} />
+            <Route path="settings" element={<AdminSettingsPage />} />
           </Route>
         </Route>
       </Routes>
