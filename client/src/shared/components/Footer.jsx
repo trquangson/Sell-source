@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaGithub, FaTwitter, FaFacebook } from 'react-icons/fa';
-import { useSite } from '../context/SiteContext';
+import { useSite } from '@/context/SiteContext';
 
 const Footer = () => {
   const { config } = useSite();

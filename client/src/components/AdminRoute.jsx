@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import axiosClient from '../api/axiosClient';
+import axiosClient from '@/shared/api/axiosClient';
 
 const AdminRoute = () => {
     const [isAdmin, setIsAdmin] = useState(null);

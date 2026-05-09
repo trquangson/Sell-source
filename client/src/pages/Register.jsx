@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axiosClient from '../api/axiosClient';
+import axiosClient from '@/shared/api/axiosClient';
 import { Loader2, Code2 } from 'lucide-react';
 
 const Register = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import axiosClient from '../api/axiosClient';
+import axiosClient from '@/shared/api/axiosClient';
 import { ShoppingCart, CheckCircle2, ChevronLeft, Tag, Loader2, ShoppingBag, XCircle, Download, AlertCircle } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
 

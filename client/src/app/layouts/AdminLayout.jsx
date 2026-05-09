@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, FileCode2, Users, Settings, LogOut, ArrowLeft, Menu, X, Tag } from 'lucide-react';
-import axiosClient from '../api/axiosClient';
+import axiosClient from '@/shared/api/axiosClient';
 
 const AdminLayout = () => {
   const location = useLocation();

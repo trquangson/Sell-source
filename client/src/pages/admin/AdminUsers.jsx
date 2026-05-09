@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axiosClient from '../../api/axiosClient';
+import axiosClient from '@/shared/api/axiosClient';
 import { Shield, ShieldAlert, Trash2, AlertCircle } from 'lucide-react';
 
 const AdminUsers = () => {

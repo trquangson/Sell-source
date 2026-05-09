@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import axiosClient from '../api/axiosClient';
+import axiosClient from '@/shared/api/axiosClient';
 import { ShoppingCart, Search, ChevronRight, ArrowUpDown } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
-import Pagination from '../components/Pagination';
-import { paginate, getTotalPages } from '../helpers/paginationHelper';
+import Pagination from '@/shared/components/Pagination';
+import { paginate, getTotalPages } from '@/shared/utils/paginationHelper';
 
 const Products = () => {
   const [sources, setSources] = useState([]);

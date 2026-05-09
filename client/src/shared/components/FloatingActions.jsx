@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowUp } from 'lucide-react';
-import siteConfig from '../config/siteConfig';
+import siteConfig from '@/config/siteConfig';
 
 const FloatingActions = () => {
   const [visible, setVisible] = useState(false);

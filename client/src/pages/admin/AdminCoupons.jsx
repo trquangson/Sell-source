@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axiosClient from '../../api/axiosClient';
+import axiosClient from '@/shared/api/axiosClient';
 import { Plus, Edit, Trash2, X, ToggleLeft, ToggleRight, AlertCircle, Tag } from 'lucide-react';
 import siteConfig from '../../config/siteConfig';
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import axiosClient from '../api/axiosClient';
+import axiosClient from '@/shared/api/axiosClient';
 import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, ChevronRight, Tag, Wallet, ArrowDownCircle, ShoppingBag, Plus, User as UserIcon } from 'lucide-react';
-import { useSite } from '../context/SiteContext';
+import { useSite } from '@/context/SiteContext';
 
 const Header = () => {
   const [user, setUser] = useState(null);

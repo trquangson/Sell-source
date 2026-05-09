@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axiosClient from '../../api/axiosClient';
+import axiosClient from '@/shared/api/axiosClient';
 import { Save, Loader2, CheckCircle2, Globe, CreditCard, Eye, EyeOff } from 'lucide-react';
 
 const SECTIONS = [

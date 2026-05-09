@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axiosClient from '../api/axiosClient';
+import axiosClient from '@/shared/api/axiosClient';
 import { Copy, CheckCheck, ArrowDownCircle, Wallet, Clock, ExternalLink } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
 

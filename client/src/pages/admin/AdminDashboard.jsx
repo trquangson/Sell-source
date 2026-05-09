@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axiosClient from '../../api/axiosClient';
+import axiosClient from '@/shared/api/axiosClient';
 import {
   DollarSign, FileCode2, Users, ShoppingCart,
   TrendingUp, ArrowDownCircle, ArrowUpCircle, Loader2, BarChart2

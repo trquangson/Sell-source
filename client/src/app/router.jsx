@@ -1,26 +1,26 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import Home from './pages/Home';
-import Products from './pages/Products';
-import ProductDetail from './pages/ProductDetail';
-import AdminRoute from './components/AdminRoute';
-import AdminLayout from './layouts/AdminLayout';
-import PublicLayout from './layouts/PublicLayout';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminSources from './pages/admin/AdminSources';
-import AdminUsers from './pages/admin/AdminUsers';
-import AdminCoupons from './pages/admin/AdminCoupons';
-import AdminSettings from './pages/admin/AdminSettings';
-import Contact from './pages/Contact';
-import Profile from './pages/Profile';
-import ScrollToTop from './components/ScrollToTop';
-import FloatingActions from './components/FloatingActions';
-import TopUp from './pages/TopUp';
-import PurchaseHistory from './pages/PurchaseHistory';
+import Register from '@/pages/Register';
+import Login from '@/pages/Login';
+import Home from '@/pages/Home';
+import Products from '@/pages/Products';
+import ProductDetail from '@/pages/ProductDetail';
+import AdminRoute from '@/components/AdminRoute';
+import AdminLayout from '@/app/layouts/AdminLayout';
+import PublicLayout from '@/app/layouts/PublicLayout';
+import AdminDashboard from '@/pages/admin/AdminDashboard';
+import AdminSources from '@/pages/admin/AdminSources';
+import AdminUsers from '@/pages/admin/AdminUsers';
+import AdminCoupons from '@/pages/admin/AdminCoupons';
+import AdminSettings from '@/pages/admin/AdminSettings';
+import Contact from '@/pages/Contact';
+import Profile from '@/pages/Profile';
+import ScrollToTop from '@/shared/components/ScrollToTop';
+import FloatingActions from '@/shared/components/FloatingActions';
+import TopUp from '@/pages/TopUp';
+import PurchaseHistory from '@/pages/PurchaseHistory';
 
-function App() {
+export default function AppRouter() {
   return (
     <Router>
       <ScrollToTop />
@@ -57,5 +57,3 @@ function App() {
     </Router>
   );
 }
-
-export default App;
