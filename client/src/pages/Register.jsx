@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axiosClient from '@/shared/api/axiosClient';
+import { authApi } from '@/features/auth/api/authApi';
 import { Loader2, Code2 } from 'lucide-react';
 
 const Register = () => {
@@ -23,7 +23,7 @@ const Register = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axiosClient.post('/auth/register', formData);
+      await authApi.register(formData);
       navigate('/login');
     } catch (err) {
       setError(err.message || 'Đăng ký thất bại, vui lòng kiểm tra lại thông tin!');

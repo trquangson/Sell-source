@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axiosClient from '@/shared/api/axiosClient';
+import { billingApi } from '@/features/billing/api/billingApi';
 import { ShoppingBag, Download, ChevronLeft } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
 
@@ -13,7 +13,7 @@ const PurchaseHistory = () => {
   const fetchOrders = async (p = 1) => {
     setLoading(true);
     try {
-      const res = await axiosClient.get(`/purchases/history?type=PURCHASE&page=${p}`);
+      const res = await billingApi.getPurchaseHistory('PURCHASE', p);
       setOrders(res.data?.transactions || []);
       setTotalPages(res.data?.totalPages || 1);
     } catch { /* silent */ }

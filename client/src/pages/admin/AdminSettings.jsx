@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axiosClient from '@/shared/api/axiosClient';
+import { adminApi } from '@/features/admin/api/adminApi';
 import { Save, Loader2, CheckCircle2, Globe, CreditCard, Eye, EyeOff } from 'lucide-react';
 
 const SECTIONS = [
@@ -55,7 +55,7 @@ const AdminSettings = () => {
   const [activeTab, setActiveTab] = useState(SECTIONS[0].id);
 
   useEffect(() => {
-    axiosClient.get('/admin/settings').then(res => {
+    adminApi.getSettings().then(res => {
       const { 'payment.sepayWebhookApiKey.set': keySet, ...rest } = res.data;
       setFormData(rest);
       setApiKeySet(!!keySet);
@@ -76,7 +76,7 @@ const AdminSettings = () => {
         payload[f.key] = formData[f.key] ?? '';
       });
 
-      await axiosClient.put('/admin/settings', payload);
+      await adminApi.updateSettings(payload);
       setToast('Đã lưu cài đặt thành công!');
       // Refresh API key status
       if (sectionId === 'payment' && payload['payment.sepayWebhookApiKey']) {

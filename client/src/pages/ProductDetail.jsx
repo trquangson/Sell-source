@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import axiosClient from '@/shared/api/axiosClient';
+import { productsApi } from '@/features/products/api/productsApi';
+import { billingApi } from '@/features/billing/api/billingApi';
 import { ShoppingCart, CheckCircle2, ChevronLeft, Tag, Loader2, ShoppingBag, XCircle, Download, AlertCircle } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
 
@@ -26,13 +27,13 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const res = await axiosClient.get(`/sources/${id}`);
+        const res = await productsApi.getSource(id);
         setSource(res.data);
         setActiveImage(res.data.thumbnail);
 
         // Kiểm tra đã mua chưa (không cần auth — nếu 401 thì chưa đăng nhập, bỏ qua)
         try {
-          const checkRes = await axiosClient.get(`/purchases/check/${id}`);
+          const checkRes = await billingApi.checkPurchased(id);
           setAlreadyPurchased(checkRes.purchased || false);
         } catch { /* chưa đăng nhập */ }
       } catch (error) {
@@ -51,7 +52,7 @@ const ProductDetail = () => {
     setCouponResult(null);
 
     try {
-      const res = await axiosClient.post('/coupons/validate', {
+      const res = await productsApi.validateCoupon({
         code: couponCode.trim(),
         productId: source._id,
         productPrice: source.price,
@@ -75,7 +76,7 @@ const ProductDetail = () => {
     setPurchaseLoading(true);
     setPurchaseError('');
     try {
-      await axiosClient.post('/purchases', {
+      await billingApi.purchase({
         sourceId: source._id,
         couponCode: couponResult ? couponResult.code : null
       });

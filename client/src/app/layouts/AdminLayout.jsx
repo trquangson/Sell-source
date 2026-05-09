@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, FileCode2, Users, Settings, LogOut, ArrowLeft, Menu, X, Tag } from 'lucide-react';
-import axiosClient from '@/shared/api/axiosClient';
+import { authApi } from '@/features/auth/api/authApi';
 
 const AdminLayout = () => {
   const location = useLocation();
@@ -18,7 +18,7 @@ const AdminLayout = () => {
 
   const handleLogout = async () => {
     try {
-      await axiosClient.post('/auth/logout');
+      await authApi.logout();
     } catch (error) {
       console.error(error);
     } finally {

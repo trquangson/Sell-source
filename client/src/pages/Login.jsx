@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axiosClient from '@/shared/api/axiosClient';
+import { authApi } from '@/features/auth/api/authApi';
 import { Loader2, Code2 } from 'lucide-react';
 
 const Login = () => {
@@ -21,7 +21,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axiosClient.post('/auth/login', formData);
+      const response = await authApi.login(formData);
       localStorage.setItem('user', JSON.stringify(response.user));
       navigate('/');
     } catch (err) {

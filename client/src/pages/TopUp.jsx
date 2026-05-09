@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axiosClient from '@/shared/api/axiosClient';
+import { authApi } from '@/features/auth/api/authApi';
+import { billingApi } from '@/features/billing/api/billingApi';
 import { Copy, CheckCheck, ArrowDownCircle, Wallet, Clock, ExternalLink } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
 
@@ -31,8 +32,8 @@ const TopUp = () => {
     const fetchData = async () => {
       try {
         const [userRes, histRes] = await Promise.all([
-          axiosClient.get('/auth/me'),
-          axiosClient.get('/purchases/history?type=DEPOSIT&page=1')
+          authApi.getMe(),
+          billingApi.getPurchaseHistory('DEPOSIT', 1)
         ]);
         setUser(userRes.user);
         setHistory(histRes.data?.transactions || []);

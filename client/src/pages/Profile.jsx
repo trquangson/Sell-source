@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axiosClient from '@/shared/api/axiosClient';
+import { authApi } from '@/features/auth/api/authApi';
+import { userApi } from '@/features/user/api/userApi';
 import { User, Lock, Mail, Shield, Wallet, Calendar, Loader2, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,7 +34,7 @@ const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosClient.get('/auth/me')
+    authApi.getMe()
       .then(res => {
         setUser(res.user);
         setFullName(res.user.fullName || '');
@@ -52,7 +53,7 @@ const Profile = () => {
     
     setUpdatingProfile(true);
     try {
-      const res = await axiosClient.put('/profile', { fullName });
+      const res = await userApi.updateProfile({ fullName });
       setUser(res.user);
       showToast('Cập nhật thông tin thành công!');
     } catch (err) {
@@ -73,7 +74,7 @@ const Profile = () => {
 
     setUpdatingPass(true);
     try {
-      await axiosClient.put('/profile/password', {
+      await userApi.updatePassword({
         oldPassword: passForm.oldPassword,
         newPassword: passForm.newPassword
       });

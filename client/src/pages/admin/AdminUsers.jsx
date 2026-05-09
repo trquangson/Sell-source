@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axiosClient from '@/shared/api/axiosClient';
+import { authApi } from '@/features/auth/api/authApi';
+import { adminApi } from '@/features/admin/api/adminApi';
 import { Shield, ShieldAlert, Trash2, AlertCircle } from 'lucide-react';
 
 const AdminUsers = () => {
@@ -15,7 +16,7 @@ const AdminUsers = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const res = await axiosClient.get('/auth/me');
+      const res = await authApi.getMe();
       setCurrentUser(res.user);
     } catch (error) {
       console.error(error);
@@ -25,7 +26,7 @@ const AdminUsers = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await axiosClient.get('/admin/users');
+      const res = await adminApi.getUsers();
       setUsers(res.data || []);
     } catch (error) {
       console.error('Lỗi lấy danh sách user', error);
@@ -36,7 +37,7 @@ const AdminUsers = () => {
 
   const handleRoleChange = async (userId, newRole) => {
     try {
-      await axiosClient.put(`/admin/users/${userId}/role`, { role: newRole });
+      await adminApi.updateUserRole(userId, newRole);
       fetchUsers(); // Cập nhật lại danh sách
     } catch (error) {
       alert(error.response?.data?.message || 'Lỗi cập nhật quyền');
@@ -45,7 +46,7 @@ const AdminUsers = () => {
 
   const confirmDelete = async () => {
     try {
-      await axiosClient.delete(`/admin/users/${deleteId}`);
+      await adminApi.deleteUser(deleteId);
       fetchUsers();
       setDeleteId(null);
     } catch (error) {

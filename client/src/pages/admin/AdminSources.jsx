@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axiosClient from '@/shared/api/axiosClient';
+import { adminApi } from '@/features/admin/api/adminApi';
 import { Plus, Edit, Trash2, X, Upload, AlertCircle } from 'lucide-react';
 import siteConfig from '../../config/siteConfig';
 
@@ -30,7 +30,7 @@ const AdminSources = () => {
 
   const fetchSources = async () => {
     try {
-      const res = await axiosClient.get('/admin/sources');
+      const res = await adminApi.getSources();
       setSources(res.data || []);
     } catch (error) {
       console.error('Lỗi lấy danh sách', error);
@@ -71,7 +71,7 @@ const AdminSources = () => {
 
   const confirmDelete = async () => {
     try {
-      await axiosClient.delete(`/admin/sources/${deleteId}`);
+      await adminApi.deleteSource(deleteId);
       fetchSources();
       setDeleteId(null);
     } catch (error) {
@@ -100,11 +100,11 @@ const AdminSources = () => {
 
     try {
       if (editId) {
-        await axiosClient.put(`/admin/sources/${editId}`, data, {
+        await adminApi.updateSource(editId, data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
       } else {
-        await axiosClient.post('/admin/sources', data, {
+        await adminApi.createSource(data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
       }

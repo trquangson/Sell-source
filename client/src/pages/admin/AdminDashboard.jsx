@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axiosClient from '@/shared/api/axiosClient';
+import { adminApi } from '@/features/admin/api/adminApi';
 import {
   DollarSign, FileCode2, Users, ShoppingCart,
   TrendingUp, ArrowDownCircle, ArrowUpCircle, Loader2, BarChart2
@@ -32,7 +32,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axiosClient.get('/admin/dashboard')
+    adminApi.getDashboard()
       .then(res => setData(res.data))
       .catch(() => { })
       .finally(() => setLoading(false));

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import axiosClient from '@/shared/api/axiosClient';
+import { productsApi } from '@/features/products/api/productsApi';
 import { ShoppingCart, Search, ChevronRight, ArrowUpDown } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
 import Pagination from '@/shared/components/Pagination';
@@ -42,7 +42,7 @@ const Products = () => {
   useEffect(() => {
     const fetchSources = async () => {
       try {
-        const res = await axiosClient.get('/sources');
+        const res = await productsApi.getSources();
         setSources(res.data || []);
       } catch (error) {
         console.error('Lỗi lấy danh sách', error);

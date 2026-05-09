@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axiosClient from '@/shared/api/axiosClient';
+import { adminApi } from '@/features/admin/api/adminApi';
 import { Plus, Edit, Trash2, X, ToggleLeft, ToggleRight, AlertCircle, Tag } from 'lucide-react';
 import siteConfig from '../../config/siteConfig';
 
@@ -41,7 +41,7 @@ const AdminCoupons = () => {
   const fetchCoupons = async () => {
     try {
       setLoading(true);
-      const res = await axiosClient.get('/admin/coupons');
+      const res = await adminApi.getCoupons();
       setCoupons(res.data || []);
     } catch {
       setError('Không thể tải danh sách mã giảm giá');
@@ -52,7 +52,7 @@ const AdminCoupons = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axiosClient.get('/admin/sources');
+      const res = await adminApi.getSources();
       setAllProducts(res.data || []);
     } catch { /* silent */ }
   };
@@ -117,9 +117,9 @@ const AdminCoupons = () => {
     setError('');
     try {
       if (editId) {
-        await axiosClient.put(`/admin/coupons/${editId}`, formData);
+        await adminApi.updateCoupon(editId, formData);
       } else {
-        await axiosClient.post('/admin/coupons', formData);
+        await adminApi.createCoupon(formData);
       }
       setShowModal(false);
       fetchCoupons();
@@ -131,7 +131,7 @@ const AdminCoupons = () => {
 
   const handleDelete = async () => {
     try {
-      await axiosClient.delete(`/admin/coupons/${deleteId}`);
+      await adminApi.deleteCoupon(deleteId);
       setDeleteId(null);
       fetchCoupons();
     } catch {
@@ -141,7 +141,7 @@ const AdminCoupons = () => {
 
   const handleToggle = async (coupon) => {
     try {
-      await axiosClient.put(`/admin/coupons/${coupon._id}`, { ...coupon, isActive: !coupon.isActive });
+      await adminApi.toggleCouponStatus(coupon._id, { ...coupon, isActive: !coupon.isActive });
       fetchCoupons();
     } catch {
       setError('Không thể cập nhật trạng thái');

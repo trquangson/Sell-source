@@ -5,7 +5,7 @@ import Login from '@/pages/Login';
 import Home from '@/pages/Home';
 import Products from '@/pages/Products';
 import ProductDetail from '@/pages/ProductDetail';
-import AdminRoute from '@/components/AdminRoute';
+import AdminRoute from '@/features/auth/components/AdminRoute';
 import AdminLayout from '@/app/layouts/AdminLayout';
 import PublicLayout from '@/app/layouts/PublicLayout';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
