@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { authApi } from '@/features/auth/api/authApi';
 import { billingApi } from '@/features/billing/api/billingApi';
-import { Copy, CheckCheck, ArrowDownCircle, Wallet, Clock, ExternalLink } from 'lucide-react';
-import { useSite } from '../context/SiteContext';
+import { Copy, CheckCheck, Wallet, Clock, ExternalLink } from 'lucide-react';
+import { useSite } from '@/context/SiteContext';
+import DepositHistory from '@/features/billing/components/DepositHistory';
 
 const BANK_CODES = {
   'MB Bank': 'MB',
@@ -17,7 +18,7 @@ const BANK_CODES = {
 
 const QUICK_AMOUNTS = [50000, 100000, 200000, 500000, 1000000];
 
-const TopUp = () => {
+const TopUpPage = () => {
   const [amount, setAmount] = useState('');
   const [user, setUser] = useState(null);
   const [copied, setCopied] = useState('');
@@ -63,13 +64,9 @@ const TopUp = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
 
-          {/* === Cột trái: Chọn số tiền + QR === */}
           <div className="space-y-4">
-
-            {/* Quick amounts */}
             <div className="bg-white rounded-2xl border border-slate-200 p-4 md:p-5 shadow-sm">
               <label className="block text-sm font-semibold text-slate-700 mb-3">Chọn hoặc nhập số tiền</label>
-              {/* Trên mobile: 3 cột, desktop: flex wrap */}
               <div className="grid grid-cols-3 md:flex md:flex-wrap gap-2 mb-3">
                 {QUICK_AMOUNTS.map(q => (
                   <button
@@ -94,7 +91,6 @@ const TopUp = () => {
               />
             </div>
 
-            {/* QR Code */}
             <div className="bg-white rounded-2xl border border-slate-200 p-4 md:p-5 shadow-sm text-center">
               <p className="text-sm font-semibold text-slate-600 mb-3">Quét QR để chuyển khoản</p>
               <div className="inline-block p-3 bg-white rounded-xl border border-slate-200 shadow-inner">
@@ -106,13 +102,9 @@ const TopUp = () => {
               </div>
               <p className="text-xs text-slate-400 mt-2">QR cập nhật theo số tiền bạn nhập</p>
             </div>
-
           </div>
 
-          {/* === Cột phải: Thông tin CK + Lưu ý === */}
           <div className="space-y-4">
-
-            {/* Thông tin tài khoản */}
             <div className="bg-white rounded-2xl border border-slate-200 p-4 md:p-5 shadow-sm">
               <h2 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                 <Wallet size={16} className="text-primary-600" /> Thông tin chuyển khoản
@@ -152,7 +144,6 @@ const TopUp = () => {
               )}
             </div>
 
-            {/* Lưu ý */}
             <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4">
               <p className="text-sm font-bold text-amber-800 mb-2">⚠️ Quan trọng</p>
               <ul className="text-xs text-amber-700 space-y-1.5">
@@ -161,11 +152,9 @@ const TopUp = () => {
                 <li>• Mỗi giao dịch được xử lý 1 lần duy nhất - không chuyển trùng.</li>
               </ul>
             </div>
-
           </div>
         </div>
 
-        {/* === Lịch sử nạp tiền === */}
         <div className="mt-6 md:mt-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base md:text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -179,28 +168,7 @@ const TopUp = () => {
           </div>
 
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            {historyLoading ? (
-              <p className="p-6 text-center text-slate-500 text-sm">Đang tải...</p>
-            ) : history.length === 0 ? (
-              <p className="p-6 text-center text-slate-500 text-sm">Chưa có giao dịch nào.</p>
-            ) : (
-              <div className="divide-y divide-slate-100">
-                {history.map(tx => (
-                  <div key={tx._id} className="flex items-center justify-between px-4 md:px-5 py-3 md:py-4 gap-3">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                        <ArrowDownCircle size={16} className="text-green-600" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium text-slate-800 truncate">{tx.description}</p>
-                        <p className="text-xs text-slate-400">{new Date(tx.createdAt).toLocaleString('vi-VN')}</p>
-                      </div>
-                    </div>
-                    <span className="text-green-600 font-bold text-sm flex-shrink-0">+{tx.amount.toLocaleString()}đ</span>
-                  </div>
-                ))}
-              </div>
-            )}
+            <DepositHistory history={history} loading={historyLoading} />
           </div>
         </div>
 
@@ -209,4 +177,4 @@ const TopUp = () => {
   );
 };
 
-export default TopUp;
+export default TopUpPage;

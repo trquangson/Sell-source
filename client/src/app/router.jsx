@@ -17,8 +17,8 @@ import Contact from '@/pages/Contact';
 import ProfilePage from '@/pages/ProfilePage';
 import ScrollToTop from '@/shared/components/ScrollToTop';
 import FloatingActions from '@/shared/components/FloatingActions';
-import TopUp from '@/pages/TopUp';
-import PurchaseHistory from '@/pages/PurchaseHistory';
+import TopUpPage from '@/pages/TopUpPage';
+import PurchaseHistoryPage from '@/pages/PurchaseHistoryPage';
 
 export default function AppRouter() {
   return (
@@ -38,8 +38,8 @@ export default function AppRouter() {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/topup" element={<TopUp />} />
-          <Route path="/history/purchase" element={<PurchaseHistory />} />
+          <Route path="/topup" element={<TopUpPage />} />
+          <Route path="/history/purchase" element={<PurchaseHistoryPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
