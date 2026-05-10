@@ -115,10 +115,10 @@ const Header = () => {
 
                 <Link
                   to="/products"
-                  className="flex items-center justify-between px-4 py-2.5 text-sm font-bold text-text-main hover:bg-surface-hover hover:text-primary-600 transition-colors"
+                  className="flex items-center px-4 py-2.5 text-sm font-bold text-text-main hover:bg-surface-hover hover:text-primary-600 transition-colors gap-2"
                 >
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400 flex-shrink-0" />
                   {t('product.all')}
-                  <ChevronRight size={14} className="text-text-muted" />
                 </Link>
 
                 <div className="h-px bg-border mx-3 my-1" />
@@ -263,6 +263,7 @@ const Header = () => {
           <nav className="flex flex-col gap-1">
             <Link
               to="/"
+              onClick={() => setIsMobileMenuOpen(false)}
               className={`p-3 rounded-lg text-sm font-bold ${location.pathname === '/' ? 'bg-primary-50 text-primary-600' : 'text-text-muted hover:bg-surface-hover'}`}
             >
               {t('header.home')}
@@ -281,14 +282,17 @@ const Header = () => {
                 <div className="ml-3 mt-1 space-y-0.5 border-l border-border pl-3">
                   <Link
                     to="/products"
-                    className="block py-2 px-2 text-sm font-bold text-text-main hover:text-primary-600 rounded-lg hover:bg-surface-hover"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-2 py-2 px-2 text-sm font-bold text-text-main hover:text-primary-600 rounded-lg hover:bg-surface-hover"
                   >
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400 flex-shrink-0" />
                     {t('product.all')}
                   </Link>
                   {config.categories.map((cat) => (
                     <Link
                       key={cat}
                       to={`/products?category=${encodeURIComponent(cat)}`}
+                      onClick={() => setIsMobileMenuOpen(false)}
                       className="flex items-center gap-2 py-2 px-2 text-sm font-medium text-text-muted hover:text-primary-600 rounded-lg hover:bg-surface-hover"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0" />
@@ -301,6 +305,7 @@ const Header = () => {
 
             <Link
               to="/contact"
+              onClick={() => setIsMobileMenuOpen(false)}
               className={`p-3 rounded-lg text-sm font-bold ${location.pathname === '/contact' ? 'bg-primary-50 text-primary-600' : 'text-text-muted hover:bg-surface-hover'}`}
             >
               {t('header.contact')}
@@ -319,10 +324,10 @@ const Header = () => {
             {user ? (
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 bg-surface-hover rounded-xl border border-border">
-                  <div>
-                    <Link to="/profile" className="text-sm font-bold text-text-main hover:text-primary-600">{user.fullName}</Link>
+                  <Link to="/profile" className="flex-1" onClick={() => setIsMobileMenuOpen(false)}>
+                    <p className="text-sm font-bold text-text-main hover:text-primary-600">{user.fullName}</p>
                     <p className="text-xs text-emerald-600 font-mono font-bold mt-0.5">{user.balance?.toLocaleString()}đ</p>
-                  </div>
+                  </Link>
                   <button onClick={handleLogout} className="p-2 text-red-500 hover:bg-red-100 rounded-lg flex-shrink-0">
                     <LogOut size={18} />
                   </button>
@@ -331,6 +336,7 @@ const Header = () => {
                 <div className="grid grid-cols-2 gap-2">
                   <Link
                     to="/topup"
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className="flex flex-col items-center gap-1 p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-xl transition-colors text-center border border-emerald-200"
                   >
                     <Plus size={16} />
@@ -338,6 +344,7 @@ const Header = () => {
                   </Link>
                   <Link
                     to="/history/purchase"
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className="flex flex-col items-center gap-1 p-3 bg-white border border-border text-text-muted hover:text-primary-600 rounded-xl transition-colors text-center shadow-sm"
                   >
                     <ShoppingBag size={16} />
@@ -346,15 +353,15 @@ const Header = () => {
                 </div>
 
                 {user.role === 'admin' && (
-                  <Link to="/admin" className="flex items-center justify-center gap-2 w-full p-3 bg-slate-800 text-white rounded-xl text-sm font-mono border border-border font-bold">
+                  <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-center gap-2 w-full p-3 bg-slate-800 text-white rounded-xl text-sm font-mono border border-border font-bold">
                     <LayoutDashboard size={16} /> {t('header.admin_panel')}
                   </Link>
                 )}
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3">
-                <Link to="/login" className="flex items-center justify-center py-2.5 text-sm font-bold border border-border bg-white shadow-sm rounded-lg text-text-main hover:text-primary-600">{t('header.login')}</Link>
-                <Link to="/register" className="flex items-center justify-center py-2.5 text-sm font-bold bg-primary-600 text-white rounded-lg shadow-[0_0_10px_rgba(8,145,178,0.2)] hover:bg-primary-500">{t('header.register')}</Link>
+                <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-center py-2.5 text-sm font-bold border border-border bg-white shadow-sm rounded-lg text-text-main hover:text-primary-600">{t('header.login')}</Link>
+                <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-center py-2.5 text-sm font-bold bg-primary-600 text-white rounded-lg shadow-[0_0_10px_rgba(8,145,178,0.2)] hover:bg-primary-500">{t('header.register')}</Link>
               </div>
             )}
           </div>

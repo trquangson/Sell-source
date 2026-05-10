@@ -43,7 +43,10 @@ const PurchaseHistoryPage = () => {
           {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
             <button
               key={p}
-              onClick={() => setPage(p)}
+              onClick={() => {
+                setPage(p);
+                setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 50);
+              }}
               className={`w-9 h-9 rounded-lg text-sm font-bold transition-colors shadow-sm ${
                 page === p ? 'bg-primary-50 text-primary-600 border border-primary-200' : 'bg-white text-text-muted border border-border hover:border-primary-400'
               }`}

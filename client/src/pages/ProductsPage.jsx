@@ -136,7 +136,7 @@ const ProductsPage = () => {
                 totalPages={totalPages}
                 onPageChange={(page) => {
                   setCurrentPage(page);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 50);
                 }}
               />
             </>
