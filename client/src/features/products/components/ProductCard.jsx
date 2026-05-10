@@ -15,7 +15,7 @@ const ProductCard = ({ source }) => {
           alt={source.title}
           className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 ease-out"
         />
-        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-mono font-bold text-primary-600 border border-primary-200 uppercase tracking-wider shadow-sm">
+        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-bold text-primary-600 border border-primary-200 uppercase tracking-wider shadow-sm">
           {source.category ? t(`categories.${source.category}`) : t('common.package')}
         </div>
       </div>
@@ -32,14 +32,14 @@ const ProductCard = ({ source }) => {
 
         <div className="flex items-end justify-between pt-4 border-t border-border mt-auto">
           <div>
-            <p className="text-[10px] text-text-muted font-mono font-bold uppercase tracking-widest mb-1">{t('detail.license_fee')}</p>
+            <p className="text-[10px] text-text-muted font-bold uppercase tracking-widest mb-1">{t('detail.license_fee')}</p>
             <p className="text-xl font-extrabold text-primary-600 font-mono leading-none">
               {source.price.toLocaleString()}<span className="text-sm font-semibold ml-0.5">đ</span>
             </p>
           </div>
           {source.purchaseCount > 0 && (
             <div className="text-right">
-              <p className="text-[10px] text-text-muted font-mono font-bold uppercase tracking-widest mb-1">{t('product.installs')}</p>
+              <p className="text-[10px] text-text-muted font-bold uppercase tracking-widest mb-1">{t('product.installs')}</p>
               <p className="text-sm font-bold text-text-main font-mono">{source.purchaseCount.toLocaleString()}</p>
             </div>
           )}

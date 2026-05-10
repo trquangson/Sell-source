@@ -52,17 +52,17 @@ const ProductDetailPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-4">
         <Loader2 className="animate-spin text-primary-500" size={32} />
-        <span className="text-text-muted font-mono text-sm animate-pulse">{t('detail.loading', 'Loading repository data...')}</span>
+        <span className="text-text-muted text-sm animate-pulse">{t('detail.loading', 'Loading repository data...')}</span>
       </div>
     </div>
   );
   
-  if (!source) return <div className="min-h-screen flex items-center justify-center bg-background text-text-muted font-mono">{t('detail.not_found', 'Không tìm thấy sản phẩm.')}</div>;
+  if (!source) return <div className="min-h-screen flex items-center justify-center bg-background text-text-muted">{t('detail.not_found', 'Không tìm thấy sản phẩm.')}</div>;
 
   return (
     <div className="py-8 bg-background min-h-screen">
       <div className="max-w-6xl mx-auto px-4">
-        <Link to="/products" className="inline-flex items-center text-sm font-mono text-text-muted hover:text-primary-600 mb-6 transition-colors font-bold">
+        <Link to="/products" className="inline-flex items-center text-sm text-text-muted hover:text-primary-600 mb-6 transition-colors font-bold">
           <ChevronLeft size={16} className="mr-1" /> {t('detail.back_btn', 'cd ..')}
         </Link>
 

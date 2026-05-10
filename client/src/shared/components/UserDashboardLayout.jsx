@@ -32,7 +32,7 @@ const UserDashboardLayout = ({ children, title, subtitle }) => {
           
           {/* Sidebar for Desktop / Tabs for Mobile */}
           <div className="md:w-64 flex-shrink-0">
-            <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden md:sticky md:top-24 font-mono text-sm">
+            <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden md:sticky md:top-24 text-sm">
               <nav className="flex md:flex-col overflow-x-auto md:overflow-visible scrollbar-hide">
                 {navItems.map((item) => {
                   const isActive = location.pathname === item.path || (item.path !== '/profile' && location.pathname.startsWith(item.path));

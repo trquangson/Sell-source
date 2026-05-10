@@ -116,7 +116,6 @@
     "purchase_guide": "Hướng dẫn mua hàng",
     "privacy_policy": "Chính sách bảo mật",
     "terms_of_service": "Điều khoản dịch vụ",
-    "all_systems_operational": "Tất cả hệ thống hoạt động bình thường",
     "all_rights_reserved": "Tất cả các quyền được bảo lưu.",
     "home": "Trang chủ",
     "repo": "Mã nguồn"
@@ -225,7 +224,7 @@
   },
   "site": {
     "tagline": "Nền tảng mua bán mã nguồn uy tín",
-    "description": "Nền tảng mua bán mã nguồn chất lượng cao, an toàn và uy tín. Khám phá hàng ngàn mã nguồn hữu ích cho dự án của bạn ngay hôm nay.",
+    "description": "Nền tảng mua bán mã nguồn chất lượng cao, an toàn và uy tín.",
     "seo_title": "SellSource – Mua bán mã nguồn chất lượng"
   },
   "categories": {

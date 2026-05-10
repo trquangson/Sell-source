@@ -30,25 +30,25 @@ const ProfileForm = ({ initialFullName, onUpdateSuccess, showToast }) => {
 
   return (
     <div className="bg-white rounded-xl p-6 md:p-8 border border-border shadow-sm">
-      <h3 className="text-sm font-bold text-text-main mb-6 border-b border-border pb-4 font-mono uppercase tracking-widest">
+      <h3 className="text-sm font-bold text-text-main mb-6 border-b border-border pb-4 uppercase tracking-widest">
         {t('profile.basic_data', 'Basic Profile Data')}
       </h3>
 
       <form onSubmit={handleUpdateProfile} className="max-w-md space-y-5">
         <div>
-          <label className="block text-xs font-mono font-bold text-text-muted mb-2 uppercase tracking-wider">{t('profile.display_name', 'Display Name')}</label>
+          <label className="block text-xs font-bold text-text-muted mb-2 uppercase tracking-wider">{t('profile.display_name', 'Display Name')}</label>
           <input
             type="text"
             value={fullName}
             onChange={e => setFullName(e.target.value)}
-            className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-text-main font-mono text-sm shadow-sm"
+            className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-text-main text-sm shadow-sm"
           />
         </div>
         <div>
           <button
             type="submit"
             disabled={updatingProfile}
-            className="flex items-center justify-center gap-2 px-6 py-2.5 bg-primary-50 hover:bg-primary-600 border border-primary-100 hover:border-primary-600 text-primary-600 hover:text-white rounded-lg font-bold font-mono transition-colors disabled:opacity-70 w-full md:w-auto text-sm shadow-sm"
+            className="flex items-center justify-center gap-2 px-6 py-2.5 bg-primary-50 hover:bg-primary-600 border border-primary-100 hover:border-primary-600 text-primary-600 hover:text-white rounded-lg font-bold transition-colors disabled:opacity-70 w-full md:w-auto text-sm shadow-sm"
           >
             {updatingProfile ? <Loader2 size={16} className="animate-spin" /> : t('profile.save_config', 'Save configuration')}
           </button>

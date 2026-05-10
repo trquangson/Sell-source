@@ -30,7 +30,7 @@ const PurchaseHistoryPage = () => {
 
   return (
     <UserDashboardLayout title={t('history.title')} subtitle={t('history.subtitle')}>
-      <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden font-mono">
+      <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
         {loading ? (
           <p className="p-10 text-center text-text-muted animate-pulse">Loading logs...</p>
         ) : (
@@ -39,7 +39,7 @@ const PurchaseHistoryPage = () => {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex justify-center gap-2 mt-5 md:mt-6 flex-wrap font-mono">
+        <div className="flex justify-center gap-2 mt-5 md:mt-6 flex-wrap">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
             <button
               key={p}

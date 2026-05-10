@@ -11,7 +11,7 @@ const ProductSidebar = ({ searchTerm, setSearchTerm, selectedCategory, setSelect
     <aside className="w-full md:w-64 flex-shrink-0">
       <div className="bg-white p-5 rounded-2xl border border-border shadow-sm sticky top-24">
         <div className="mb-6">
-          <h3 className="text-xs font-mono font-bold text-text-muted mb-3 uppercase tracking-widest flex items-center gap-2">
+          <h3 className="text-xs font-bold text-text-muted mb-3 uppercase tracking-widest flex items-center gap-2">
             <Search size={14} /> {t('header.search')}
           </h3>
           <div className="relative">
@@ -20,17 +20,17 @@ const ProductSidebar = ({ searchTerm, setSearchTerm, selectedCategory, setSelect
               placeholder={t('product.search_placeholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-surface border border-border focus:border-primary-500 rounded-xl text-sm text-text-main outline-none transition-all font-mono shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-surface border border-border focus:border-primary-500 rounded-xl text-sm text-text-main outline-none transition-all shadow-sm"
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={16} />
           </div>
         </div>
 
         <div>
-          <h3 className="text-xs font-mono font-bold text-text-muted mb-3 uppercase tracking-widest flex items-center gap-2">
+          <h3 className="text-xs font-bold text-text-muted mb-3 uppercase tracking-widest flex items-center gap-2">
             <Filter size={14} /> {t('product.categories')}
           </h3>
-          <ul className="space-y-1.5 font-mono text-sm">
+          <ul className="space-y-1.5 text-sm">
             {categories.map(cat => (
               <li key={cat}>
                 <button

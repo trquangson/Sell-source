@@ -91,18 +91,18 @@ const ProductsPage = () => {
                 <Box size={20} className="text-primary-600" />
                 {searchTerm ? `${t('product.results_for')} "${searchTerm}"` : (selectedCategory === 'Tất cả' ? t('product.all') : t(`categories.${selectedCategory}`))}
               </h2>
-              <div className="text-sm text-text-muted font-mono mt-2">
+              <div className="text-sm text-text-muted mt-2">
                 {t('product.showing')} <span className="text-primary-600 font-bold">{filteredSources.length}</span> {t('product.repositories')}
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="text-xs text-text-muted font-mono font-bold uppercase tracking-widest">{t('product.sort_by')}</span>
+              <span className="text-xs text-text-muted font-bold uppercase tracking-widest">{t('product.sort_by')}</span>
               <div className="relative">
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="appearance-none bg-white border border-border text-text-main text-sm rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 block p-2.5 pr-8 outline-none cursor-pointer font-mono font-bold shadow-sm"
+                  className="appearance-none bg-white border border-border text-text-main text-sm rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 block p-2.5 pr-8 outline-none cursor-pointer font-bold shadow-sm"
                 >
                   <option value="newest">{t('product.newest')}</option>
                   <option value="oldest">{t('product.oldest')}</option>
