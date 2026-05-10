@@ -5,8 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import Toast from '@/shared/components/Toast';
 import ProfileForm from '@/features/user/components/ProfileForm';
 import PasswordForm from '@/features/user/components/PasswordForm';
+import UserDashboardLayout from '@/shared/components/UserDashboardLayout';
+import { useTranslation } from 'react-i18next';
 
 const ProfilePage = () => {
+  const { t } = useTranslation();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
@@ -38,62 +41,56 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen py-10 bg-slate-50">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+    <UserDashboardLayout title={t('profile.title')} subtitle={t('profile.subtitle')}>
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-slate-900">Hồ sơ của bạn</h1>
-          <p className="text-sm text-slate-500 mt-1">Quản lý thông tin tài khoản và bảo mật</p>
+        {/* Left Column: Static Info */}
+        <div className="xl:col-span-1 space-y-6">
+          <div className="bg-white rounded-xl p-6 border border-border shadow-sm text-center relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary-100 rounded-full blur-2xl group-hover:bg-primary-200 transition-all"></div>
+            
+            <div className="w-20 h-20 mx-auto mb-4 rounded-xl bg-surface-hover flex items-center justify-center text-3xl font-mono font-bold text-primary-600 border border-primary-200 shadow-sm relative z-10">
+              {user.username.charAt(0).toUpperCase()}
+            </div>
+
+            <h2 className="text-xl font-bold text-text-main relative z-10">{user.fullName}</h2>
+            <p className="text-sm text-text-muted mt-1 font-medium relative z-10">@{user.username}</p>
+            
+            <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-border rounded font-mono text-xs font-bold text-text-main shadow-sm relative z-10">
+              <Shield size={14} className={user.role === 'admin' ? 'text-emerald-500' : 'text-primary-600'} />
+              {user.role === 'admin' ? 'ROOT' : 'USER'}
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl p-5 border border-border shadow-sm space-y-4">
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-text-muted mb-1 flex items-center gap-1.5 font-bold"><Wallet size={12}/> {t('profile.available_balance')}</p>
+              <p className="text-lg font-bold text-emerald-600 font-mono">{user.balance?.toLocaleString()}đ</p>
+            </div>
+            <div className="h-px bg-border" />
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-text-muted mb-1 flex items-center gap-1.5 font-bold"><Mail size={12}/> {t('profile.email_address')}</p>
+              <p className="text-sm font-bold text-text-main truncate font-mono">{user.email}</p>
+            </div>
+            <div className="h-px bg-border" />
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-text-muted mb-1 flex items-center gap-1.5 font-bold"><Calendar size={12}/> {t('profile.account_created')}</p>
+              <p className="text-sm font-bold text-text-main font-mono">
+                {new Date(user.createdAt).toLocaleDateString('en-US')}
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          
-          {/* Cột trái: Thông tin tĩnh */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm text-center">
-              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center text-2xl font-bold text-slate-600 border border-slate-200">
-                {user.username.charAt(0).toUpperCase()}
-              </div>
-
-              <h2 className="text-lg font-bold text-slate-900">{user.fullName}</h2>
-              <p className="text-sm text-slate-500 mt-1">@{user.username}</p>
-              
-              <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 rounded-lg text-xs font-medium text-slate-600">
-                <Shield size={14} className={user.role === 'admin' ? 'text-primary-600' : 'text-slate-400'} />
-                {user.role === 'admin' ? 'Quản trị viên' : 'Thành viên'}
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-4">
-              <div>
-                <p className="text-xs text-slate-500 mb-1 flex items-center gap-1.5"><Wallet size={14}/> Số dư khả dụng</p>
-                <p className="text-base font-bold text-emerald-600">{user.balance?.toLocaleString()}đ</p>
-              </div>
-              <div className="h-px bg-slate-100" />
-              <div>
-                <p className="text-xs text-slate-500 mb-1 flex items-center gap-1.5"><Mail size={14}/> Email</p>
-                <p className="text-sm font-medium text-slate-800 truncate">{user.email}</p>
-              </div>
-              <div className="h-px bg-slate-100" />
-              <div>
-                <p className="text-xs text-slate-500 mb-1 flex items-center gap-1.5"><Calendar size={14}/> Ngày tham gia</p>
-                <p className="text-sm font-medium text-slate-800">
-                  {new Date(user.createdAt).toLocaleDateString('vi-VN')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Cột phải: Form cập nhật */}
-          <div className="lg:col-span-3 space-y-6">
-            <ProfileForm initialFullName={user.fullName} onUpdateSuccess={handleUpdateSuccess} showToast={showToast} />
-            <PasswordForm showToast={showToast} />
-          </div>
+        {/* Right Column: Forms */}
+        <div className="xl:col-span-2 space-y-6">
+          <ProfileForm initialFullName={user.fullName} onUpdateSuccess={handleUpdateSuccess} showToast={showToast} />
+          <PasswordForm showToast={showToast} />
         </div>
       </div>
 
       {toast.show && <Toast message={toast.message} type={toast.type} onClose={() => setToast({ ...toast, show: false })} />}
-    </div>
+    </UserDashboardLayout>
   );
 };
 

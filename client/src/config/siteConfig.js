@@ -1,9 +1,8 @@
 const siteConfig = {
   // ===== Thông tin cơ bản =====
   name: 'Code247',
-  tagline: 'Nền tảng mua bán mã nguồn uy tín',
-  description:
-    'Nền tảng mua bán mã nguồn chất lượng cao, an toàn và uy tín. Khám phá hàng ngàn mã nguồn hữu ích cho dự án của bạn ngay hôm nay.',
+  tagline: '',
+  description: '',
 
   // ===== Domain & API =====
   siteUrl: import.meta.env.VITE_SITE_URL || 'http://localhost:5173',
@@ -14,8 +13,8 @@ const siteConfig = {
 
   // ===== Điều hướng =====
   navLinks: [
-    { name: 'Trang chủ', path: '/' },
-    { name: 'Sản phẩm', path: '/products' },
+    { path: '/', i18nKey: 'footer.home' },
+    { path: '/products', i18nKey: 'footer.repo' },
   ],
 
   // ===== Mạng xã hội =====
@@ -31,16 +30,16 @@ const siteConfig = {
 
   // ===== Chính sách =====
   policyLinks: [
-    { name: 'Hướng dẫn mua hàng', path: '/huong-dan' },
-    { name: 'Chính sách bảo mật', path: '/chinh-sach-bao-mat' },
-    { name: 'Điều khoản dịch vụ', path: '/dieu-khoan' },
+    { path: '/huong-dan', i18nKey: 'footer.purchase_guide' },
+    { path: '/chinh-sach-bao-mat', i18nKey: 'footer.privacy_policy' },
+    { path: '/dieu-khoan', i18nKey: 'footer.terms_of_service' },
   ],
 
   // ===== SEO mặc định =====
   seo: {
-    defaultTitle: 'SellSource – Mua bán mã nguồn chất lượng',
+    defaultTitle: 'SellSource',
     titleTemplate: '%s | SellSource',
-    defaultImage: '/og-image.png', // Đặt ảnh trong /public
+    defaultImage: '/og-image.png',
   },
 
   // ===== Nạp tiền =====

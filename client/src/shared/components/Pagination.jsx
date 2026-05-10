@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Component Pagination tái sử dụng.
@@ -10,6 +11,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
  * @param {function} onPageChange - Callback khi đổi trang: (page: number) => void
  */
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  const { t } = useTranslation();
   if (totalPages <= 1) return null;
 
   // Tạo mảng số trang hiển thị (có dấu "..." khi nhiều trang)
@@ -49,7 +51,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium border border-slate-200 bg-white text-slate-600 hover:bg-primary-50 hover:text-primary-600 hover:border-primary-200 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
       >
         <ChevronLeft size={16} />
-        Trước
+        {t('common.previous')}
       </button>
 
       {/* Số trang */}
@@ -79,7 +81,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         disabled={currentPage === totalPages}
         className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium border border-slate-200 bg-white text-slate-600 hover:bg-primary-50 hover:text-primary-600 hover:border-primary-200 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
       >
-        Sau
+        {t('common.next')}
         <ChevronRight size={16} />
       </button>
     </div>
