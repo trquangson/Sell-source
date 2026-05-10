@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { productsApi } from '@/features/products/api/productsApi';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowUpDown, Box } from 'lucide-react';
 import Pagination from '@/shared/components/Pagination';
 import { paginate, getTotalPages } from '@/shared/utils/paginationHelper';
 import ProductCard from '@/features/products/components/ProductCard';
 import ProductSidebar from '@/features/products/components/ProductSidebar';
+import { useTranslation } from 'react-i18next';
 
 const ProductsPage = () => {
+  const { t } = useTranslation();
   const [sources, setSources] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -73,7 +75,7 @@ const ProductsPage = () => {
   const pagedSources = paginate(filteredSources, currentPage);
 
   return (
-    <div className="bg-slate-50 min-h-screen">
+    <div className="bg-background min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
         <ProductSidebar 
           searchTerm={searchTerm} 
@@ -83,28 +85,32 @@ const ProductsPage = () => {
         />
 
         <div className="flex-1">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-border pb-4">
             <div>
-              <h2 className="text-xl font-bold text-slate-800">
-                {searchTerm ? `Kết quả cho "${searchTerm}"` : (selectedCategory === 'Tất cả' ? 'Tất cả sản phẩm' : selectedCategory)}
+              <h2 className="text-xl font-bold text-text-main flex items-center gap-2">
+                <Box size={20} className="text-primary-600" />
+                {searchTerm ? `${t('product.results_for')} "${searchTerm}"` : (selectedCategory === 'Tất cả' ? t('product.all') : t(`categories.${selectedCategory}`))}
               </h2>
-              <div className="text-sm text-slate-500 font-medium mt-1">
-                Hiển thị <span className="text-slate-900">{filteredSources.length}</span> kết quả
+              <div className="text-sm text-text-muted font-mono mt-2">
+                {t('product.showing')} <span className="text-primary-600 font-bold">{filteredSources.length}</span> {t('product.repositories')}
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <ArrowUpDown size={18} className="text-slate-500" />
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="bg-white border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2 outline-none cursor-pointer"
-              >
-                <option value="newest">Mới nhất</option>
-                <option value="oldest">Cũ nhất</option>
-                <option value="priceAsc">Giá: Thấp đến Cao</option>
-                <option value="priceDesc">Giá: Cao đến Thấp</option>
-              </select>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-text-muted font-mono font-bold uppercase tracking-widest">{t('product.sort_by')}</span>
+              <div className="relative">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="appearance-none bg-white border border-border text-text-main text-sm rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 block p-2.5 pr-8 outline-none cursor-pointer font-mono font-bold shadow-sm"
+                >
+                  <option value="newest">{t('product.newest')}</option>
+                  <option value="oldest">{t('product.oldest')}</option>
+                  <option value="priceAsc">{t('product.price_asc')}</option>
+                  <option value="priceDesc">{t('product.price_desc')}</option>
+                </select>
+                <ArrowUpDown size={14} className="text-text-muted absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
             </div>
           </div>
 
@@ -116,8 +122,8 @@ const ProductsPage = () => {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredSources.length === 0 ? (
-                  <div className="col-span-full text-center py-16 text-slate-500 bg-white rounded-2xl border border-slate-200">
-                    Không tìm thấy mã nguồn nào phù hợp.
+                  <div className="col-span-full text-center py-16 text-text-muted bg-white rounded-2xl border border-border shadow-sm text-sm font-medium">
+                    {t('product.no_products')}
                   </div>
                 ) : (
                   pagedSources.map(source => (

@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '@/features/auth/api/authApi';
 import { Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const RegisterForm = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -26,7 +28,7 @@ const RegisterForm = () => {
       await authApi.register(formData);
       navigate('/login');
     } catch (err) {
-      setError(err.message || 'Đăng ký thất bại, vui lòng kiểm tra lại thông tin!');
+      setError(err.message || t('auth.register.error_msg', 'Đăng ký thất bại, vui lòng kiểm tra lại thông tin!'));
     } finally {
       setLoading(false);
     }
@@ -46,8 +48,8 @@ const RegisterForm = () => {
 
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">
-            Họ và tên
+          <label className="block text-sm font-bold text-slate-700 mb-1">
+            {t('auth.register.fullname_label', 'Họ và tên')}
           </label>
           <input
             type="text"
@@ -55,14 +57,14 @@ const RegisterForm = () => {
             value={formData.fullName}
             onChange={handleChange}
             required
-            className="input-field"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none transition-all shadow-sm"
             placeholder="Nguyễn Văn A"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">
-            Tên đăng nhập
+          <label className="block text-sm font-bold text-slate-700 mb-1">
+            {t('auth.register.username_label', 'Tên đăng nhập')}
           </label>
           <input
             type="text"
@@ -70,14 +72,14 @@ const RegisterForm = () => {
             value={formData.username}
             onChange={handleChange}
             required
-            className="input-field"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none transition-all shadow-sm"
             placeholder="nguyenvana"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">
-            Địa chỉ Email
+          <label className="block text-sm font-bold text-slate-700 mb-1">
+            {t('auth.register.email_label', 'Địa chỉ Email')}
           </label>
           <input
             type="email"
@@ -85,14 +87,14 @@ const RegisterForm = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="input-field"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none transition-all shadow-sm"
             placeholder="nguyenvana@example.com"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">
-            Mật khẩu
+          <label className="block text-sm font-bold text-slate-700 mb-1">
+            {t('auth.register.password_label', 'Mật khẩu')}
           </label>
           <input
             type="password"
@@ -100,7 +102,7 @@ const RegisterForm = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            className="input-field"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none transition-all shadow-sm"
             placeholder="••••••••"
           />
         </div>
@@ -109,12 +111,12 @@ const RegisterForm = () => {
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary"
+            className="w-full py-3 px-4 flex justify-center items-center text-sm font-bold rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? (
               <Loader2 className="animate-spin mr-2" size={20} />
             ) : (
-              'Đăng ký tài khoản'
+              t('auth.register.submit', 'Đăng ký tài khoản')
             )}
           </button>
         </div>
