@@ -241,6 +241,13 @@ const Header = () => {
             </div>
           )}
 
+          {/* Notification Bell (Mobile) */}
+          {user && (
+            <div className="md:hidden flex items-center">
+              <NotificationBell user={user} />
+            </div>
+          )}
+
           <button
             className="md:hidden p-2 text-text-muted hover:text-primary-600 transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
