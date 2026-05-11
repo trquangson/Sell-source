@@ -99,7 +99,10 @@
     "purchase_error": "Lỗi mua hàng",
     "login_required": "Vui lòng đăng nhập để mua hàng",
     "coupon_error": "Mã giảm giá không hợp lệ",
-    "coupon_applied": "Mã {{code}} đã được áp dụng"
+    "coupon_applied": "Mã {{code}} đã được áp dụng",
+    "buy_confirm_title": "Xác nhận mua hàng",
+    "buy_confirm_message": "Bạn có chắc chắn muốn mua mã nguồn này với giá {{price}} không?.",
+    "cancel_btn": "Hủy"
   },
   "dashboard": {
     "user_profile": "Hồ sơ",
@@ -232,5 +235,37 @@
     "Tool / Script": "Tool / Script",
     "Game": "Game",
     "Khác": "Khác"
+  },
+  "notifications": {
+    "title": "Thông báo",
+    "subtitle": "{{count}} thông báo",
+    "mark_all_read": "Đọc tất cả ({{count}})",
+    "mark_all_read_short": "Đọc tất cả",
+    "empty": "Không có thông báo nào",
+    "empty_short": "Chưa có thông báo nào",
+    "loading": "Đang tải...",
+    "view_all": "Xem tất cả (còn {{count}}+ thông báo)",
+    "view_all_short": "Xem tất cả thông báo",
+    "go_back": "Quay lại",
+    "filter_result": "Hiển thị {{count}} kết quả lọc từ trang {{page}}.",
+    "view_all_btn": "Xem tất cả",
+    "types": {
+      "DEPOSIT": "Nạp tiền",
+      "PURCHASE": "Mua hàng",
+      "ADMIN": "Từ Admin",
+      "ADMIN_BADGE": "Thông báo"
+    },
+    "tabs": {
+      "all": "Tất cả",
+      "unread": "Chưa đọc",
+      "DEPOSIT": "Nạp tiền",
+      "PURCHASE": "Mua hàng",
+      "ADMIN": "Từ Admin"
+    },
+    "broadcast": "Broadcast",
+    "delete_confirm_title": "Xác nhận xóa",
+    "delete_confirm_message": "Bạn có chắc chắn muốn xóa thông báo này? Hành động này không thể hoàn tác.",
+    "delete_confirm_btn": "Xóa",
+    "delete_cancel_btn": "Hủy"
   }
 }

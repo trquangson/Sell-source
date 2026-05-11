@@ -6,6 +6,7 @@ const paymentRoutes = require('./paymentRoutes');
 const webhookRoutes = require('./webhookRoutes');
 const settingRoutes = require('./settingRoutes');
 const profileRoutes = require('./profileRoutes');
+const notificationRoutes = require('./notificationRoutes');
 
 module.exports = (app) => {
     app.use('/api/auth', authRoutes);
@@ -16,4 +17,5 @@ module.exports = (app) => {
     app.use('/api', webhookRoutes);
     app.use('/api', settingRoutes);
     app.use('/api/profile', profileRoutes);
+    app.use('/api/notifications', notificationRoutes);
 }

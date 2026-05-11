@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, FileCode2, Users, Settings, LogOut, ArrowLeft, Menu, X, Tag } from 'lucide-react';
+import { LayoutDashboard, FileCode2, Users, Settings, LogOut, ArrowLeft, Menu, X, Tag, Bell } from 'lucide-react';
 import { authApi } from '@/features/auth/api/authApi';
 
 const AdminLayout = () => {
@@ -13,6 +13,7 @@ const AdminLayout = () => {
     { name: 'Mã nguồn', path: '/admin/sources', icon: <FileCode2 size={20} /> },
     { name: 'Người dùng', path: '/admin/users', icon: <Users size={20} /> },
     { name: 'Mã giảm giá', path: '/admin/coupons', icon: <Tag size={20} /> },
+    { name: 'Thông báo', path: '/admin/notifications', icon: <Bell size={20} /> },
     { name: 'Cài đặt', path: '/admin/settings', icon: <Settings size={20} /> },
   ];
 

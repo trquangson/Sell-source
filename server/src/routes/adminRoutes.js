@@ -5,6 +5,7 @@ const userController = require('../controllers/userController');
 const couponController = require('../controllers/couponController');
 const dashboardController = require('../controllers/dashboardController');
 const settingController = require('../controllers/settingController');
+const adminNotificationController = require('../controllers/adminNotificationController');
 const { authenticate, isAdmin } = require('../middlewares/authMiddleware');
 const { uploadSourceFiles } = require('../middlewares/uploadMiddleware');
 
@@ -28,5 +29,9 @@ router.get('/coupons', couponController.getAllCoupons);
 router.post('/coupons', couponController.createCoupon);
 router.put('/coupons/:id', couponController.updateCoupon);
 router.delete('/coupons/:id', couponController.deleteCoupon);
+
+router.post('/notifications', adminNotificationController.sendNotification);
+router.get('/notifications', adminNotificationController.listSentNotifications);
+router.delete('/notifications/:id', adminNotificationController.deleteNotification);
 
 module.exports = router;

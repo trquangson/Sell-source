@@ -23,11 +23,13 @@ const OrderList = ({ orders, handleDownload }) => {
         <div key={tx._id} className="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4 hover:bg-slate-50 transition-colors group">
           <div className="hidden xs:block w-12 h-12 md:w-14 md:h-14 rounded-xl overflow-hidden bg-surface-hover flex-shrink-0 border border-border">
             {tx.sourceId?.thumbnail ? (
-              <img
-                src={`${siteConfig.assetBaseUrl}${tx.sourceId.thumbnail}`}
-                alt={tx.sourceId.title}
-                className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-              />
+              <Link to={`/product/${tx.sourceId._id}`} className="block w-full h-full">
+                <img
+                  src={`${siteConfig.assetBaseUrl}${tx.sourceId.thumbnail}`}
+                  alt={tx.sourceId.title}
+                  className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
+                />
+              </Link>
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <Database size={18} className="text-text-muted/50" />
@@ -35,9 +37,15 @@ const OrderList = ({ orders, handleDownload }) => {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-text-main truncate group-hover:text-primary-600 transition-colors">
-              {tx.sourceId?.title || tx.description}
-            </p>
+            {tx.sourceId ? (
+              <Link to={`/product/${tx.sourceId._id}`} className="text-sm font-bold text-text-main truncate hover:text-primary-600 transition-colors block">
+                {tx.sourceId.title}
+              </Link>
+            ) : (
+              <p className="text-sm font-bold text-text-main truncate hover:text-primary-600 transition-colors">
+                {tx.description}
+              </p>
+            )}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-1">
               <span className="text-[10px] text-text-muted uppercase tracking-wider font-bold">{new Date(tx.createdAt).toLocaleDateString('en-US')}</span>
               {tx.discountAmount > 0 && (

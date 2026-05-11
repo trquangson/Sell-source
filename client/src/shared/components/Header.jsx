@@ -4,6 +4,7 @@ import axiosClient from '@/shared/api/axiosClient';
 import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, ChevronRight, Tag, Wallet, ArrowDownCircle, ShoppingBag, Plus, Globe } from 'lucide-react';
 import { useSite } from '@/context/SiteContext';
 import { useTranslation } from 'react-i18next';
+import NotificationBell from '@/features/notifications/components/NotificationBell';
 
 const Header = () => {
   const { t, i18n } = useTranslation();
@@ -195,6 +196,9 @@ const Header = () => {
               >
                 {user.username.charAt(0).toUpperCase()}
               </Link>
+
+              {/* Notification Bell */}
+              <NotificationBell user={user} />
 
               {/* Wallet Dropdown */}
               <div

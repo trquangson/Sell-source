@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Transaction = require('../models/Transaction');
+const notificationService = require('./notificationService');
 
 const TRANSFER_PREFIX = process.env.TRANSFER_PREFIX || 'SS';
 
@@ -55,6 +56,13 @@ const handleSePayWebhook = async (payload) => {
             gateway: gateway || 'SEPAY',
             sepayReference: referenceCode,
             description: `Nạp tiền qua ${gateway || 'SePay'} - TK: ${accountNumber || ''}`
+        }),
+        notificationService.createNotification({
+            userId: user._id,
+            type: 'DEPOSIT',
+            title: 'Nạp tiền thành công',
+            message: `Tài khoản của bạn đã được cộng ${transferAmount.toLocaleString('vi-VN')}₫`,
+            metadata: { amount: transferAmount, gateway: gateway || 'SEPAY' }
         })
     ]);
 

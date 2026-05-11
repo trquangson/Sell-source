@@ -13,12 +13,14 @@ import AdminSourcesPage from '@/pages/admin/AdminSourcesPage';
 import AdminUsersPage from '@/pages/admin/AdminUsersPage';
 import AdminCouponsPage from '@/pages/admin/AdminCouponsPage';
 import AdminSettingsPage from '@/pages/admin/AdminSettingsPage';
+import AdminNotificationsPage from '@/pages/admin/AdminNotificationsPage';
 import Contact from '@/pages/Contact';
 import ProfilePage from '@/pages/ProfilePage';
 import ScrollToTop from '@/shared/components/ScrollToTop';
 import FloatingActions from '@/shared/components/FloatingActions';
 import TopUpPage from '@/pages/TopUpPage';
 import PurchaseHistoryPage from '@/pages/PurchaseHistoryPage';
+import NotificationsPage from '@/pages/NotificationsPage';
 
 export default function AppRouter() {
   return (
@@ -41,6 +43,7 @@ export default function AppRouter() {
           <Route path="/topup" element={<TopUpPage />} />
           <Route path="/history/purchase" element={<PurchaseHistoryPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
         </Route>
 
         {/* Admin Routes (Được bảo vệ) */}
@@ -50,6 +53,7 @@ export default function AppRouter() {
             <Route path="sources" element={<AdminSourcesPage />} />
             <Route path="users" element={<AdminUsersPage />} />
             <Route path="coupons" element={<AdminCouponsPage />} />
+            <Route path="notifications" element={<AdminNotificationsPage />} />
             <Route path="settings" element={<AdminSettingsPage />} />
           </Route>
         </Route>

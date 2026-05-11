@@ -5,6 +5,7 @@ import { billingApi } from '@/features/billing/api/billingApi';
 import siteConfig from '@/config/siteConfig';
 import { ShoppingCart, CheckCircle2, Tag, Loader2, ShoppingBag, XCircle, Download, AlertCircle, Database } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import ConfirmModal from '@/shared/components/ConfirmModal';
 
 const PurchaseBox = ({ source, initialPurchased }) => {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ const PurchaseBox = ({ source, initialPurchased }) => {
   const [purchaseLoading, setPurchaseLoading] = useState(false);
   const [purchaseSuccess, setPurchaseSuccess] = useState(false);
   const [purchaseError, setPurchaseError] = useState('');
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) return;
@@ -188,7 +190,7 @@ const PurchaseBox = ({ source, initialPurchased }) => {
             )}
 
             <button
-              onClick={handlePurchase}
+              onClick={() => setIsConfirmOpen(true)}
               disabled={purchaseLoading}
               className="btn-primary py-4 text-base w-full flex items-center justify-center gap-2 shadow-[0_4px_14px_0_rgba(8,145,178,0.39)] hover:shadow-[0_6px_20px_rgba(8,145,178,0.23)] transform hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
             >
@@ -201,6 +203,20 @@ const PurchaseBox = ({ source, initialPurchased }) => {
           </>
         )}
       </div>
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        title={t('detail.buy_confirm_title', 'Xác nhận mua hàng')}
+        message={t('detail.buy_confirm_message', { price: `${displayPrice.toLocaleString()}đ` })}
+        confirmText={t('detail.buy_now', 'Mua ngay')}
+        cancelText={t('detail.cancel_btn', 'Hủy')}
+        type="primary"
+        onConfirm={() => {
+          setIsConfirmOpen(false);
+          handlePurchase();
+        }}
+        onCancel={() => setIsConfirmOpen(false)}
+      />
     </div>
   );
 };

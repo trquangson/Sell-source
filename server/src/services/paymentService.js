@@ -3,6 +3,7 @@ const Transaction = require('../models/Transaction');
 const SourceCode = require('../models/SourceCode');
 const couponService = require('./couponService');
 const Coupon = require('../models/Coupon');
+const notificationService = require('./notificationService');
 
 
 
@@ -100,7 +101,14 @@ const purchaseSource = async ({ userId, sourceId, couponCode }) => {
             couponCode: couponCode ? couponCode.toUpperCase() : '',
             description: `Mua sản phẩm: ${source.title}`
         }),
-        SourceCode.findByIdAndUpdate(sourceId, { $inc: { purchaseCount: 1 } })
+        SourceCode.findByIdAndUpdate(sourceId, { $inc: { purchaseCount: 1 } }),
+        notificationService.createNotification({
+            userId,
+            type: 'PURCHASE',
+            title: 'Mua hàng thành công',
+            message: `Bạn đã mua thành công: ${source.title}`,
+            metadata: { sourceId, amount: finalPrice, sourceTitle: source.title }
+        })
     ]);
 
     return {
