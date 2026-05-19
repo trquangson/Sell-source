@@ -1,8 +1,12 @@
 .env
 .env.production
 node_modules
+server/public/uploads/forum-thumbnails/*
+!server/public/uploads/forum-thumbnails/.gitkeep
 server/public/uploads/thumbnails/*
 !server/public/uploads/thumbnails/.gitkeep
 server/storage/sources/*
-!server/storage/sources/.gitkeeprulegencode.md 
+!server/storage/sources/.gitkeep
+server/storage/forum-sources/*
+!server/storage/forum-sources/.gitkeep
 .agents

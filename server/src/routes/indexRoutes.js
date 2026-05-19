@@ -7,6 +7,7 @@ const webhookRoutes = require('./webhookRoutes');
 const settingRoutes = require('./settingRoutes');
 const profileRoutes = require('./profileRoutes');
 const notificationRoutes = require('./notificationRoutes');
+const forumRoutes = require('./forumRoutes');
 
 module.exports = (app) => {
     app.use('/api/auth', authRoutes);
@@ -18,4 +19,5 @@ module.exports = (app) => {
     app.use('/api', settingRoutes);
     app.use('/api/profile', profileRoutes);
     app.use('/api/notifications', notificationRoutes);
+    app.use('/api/forum', forumRoutes);
 }

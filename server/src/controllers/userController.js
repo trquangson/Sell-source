@@ -35,3 +35,14 @@ exports.deleteUser = async (req, res) => {
     }
 };
 
+exports.updateUserBalance = async (req, res) => {
+    try {
+        const { balance } = req.body;
+        const updatedUser = await userService.updateUserBalance(req.params.id, Number(balance));
+        res.status(200).json({ success: true, message: `Đã cập nhật số dư thành ${balance}đ`, data: updatedUser });
+    } catch (error) {
+        const status = error.statusCode || 500;
+        res.status(status).json({ success: false, message: error.message || 'Lỗi hệ thống' });
+    }
+};
+

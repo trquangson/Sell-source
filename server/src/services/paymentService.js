@@ -125,12 +125,19 @@ const checkPurchased = async (userId, sourceId) => {
 
 const getUserTransactions = async (userId, type = null, page = 1, limit = 10) => {
     const query = { userId, status: 'completed' };
-    if (type) query.type = type;
+    if (type) {
+        if (type === 'PURCHASE') {
+            query.type = { $in: ['PURCHASE', 'FORUM_PURCHASE', 'SELLER_EARNING'] };
+        } else {
+            query.type = type;
+        }
+    }
 
     const skip = (page - 1) * limit;
     const [transactions, total] = await Promise.all([
         Transaction.find(query)
             .populate('sourceId', 'title thumbnail price')
+            .populate('forumPostId', 'title thumbnail demoImages price')
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit),

@@ -8,6 +8,7 @@ export const adminApi = {
   
   getUsers: () => axiosClient.get('/admin/users'),
   updateUserRole: (id, role) => axiosClient.put(`/admin/users/${id}/role`, { role }),
+  updateUserBalance: (id, balance) => axiosClient.put(`/admin/users/${id}/balance`, { balance }),
   deleteUser: (id) => axiosClient.delete(`/admin/users/${id}`),
   
   getSources: () => axiosClient.get('/admin/sources'),

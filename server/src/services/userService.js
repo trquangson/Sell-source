@@ -62,3 +62,31 @@ exports.deleteUser = async (targetId, requesterId) => {
         throw err;
     }
 };
+
+/**
+ * Cập nhật số dư người dùng.
+ * @param {string} targetId  - ID người dùng
+ * @param {number} balance   - Số dư mới
+ * @returns {object} User sau khi cập nhật
+ */
+exports.updateUserBalance = async (targetId, balance) => {
+    if (balance < 0) {
+        const err = new Error('Số dư không được âm!');
+        err.statusCode = 400;
+        throw err;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+        targetId,
+        { balance },
+        { returnDocument: 'after' }
+    ).select('-password');
+
+    if (!updatedUser) {
+        const err = new Error('Không tìm thấy người dùng');
+        err.statusCode = 404;
+        throw err;
+    }
+
+    return updatedUser;
+};

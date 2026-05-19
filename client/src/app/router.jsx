@@ -18,9 +18,17 @@ import Contact from '@/pages/Contact';
 import ProfilePage from '@/pages/ProfilePage';
 import ScrollToTop from '@/shared/components/ScrollToTop';
 import FloatingActions from '@/shared/components/FloatingActions';
+import UserProfilePage from '@/pages/UserProfilePage';
 import TopUpPage from '@/pages/TopUpPage';
 import PurchaseHistoryPage from '@/pages/PurchaseHistoryPage';
 import NotificationsPage from '@/pages/NotificationsPage';
+import ForumPage from '@/pages/ForumPage';
+import ForumDetailPage from '@/pages/ForumDetailPage';
+import ForumCreatePage from '@/pages/ForumCreatePage';
+import ForumEditPage from '@/pages/ForumEditPage';
+import ForumMyPostsPage from '@/pages/ForumMyPostsPage';
+import AdminForumPage from '@/pages/admin/AdminForumPage';
+import ProtectedRoute from '@/features/auth/components/ProtectedRoute';
 
 export default function AppRouter() {
   return (
@@ -43,7 +51,13 @@ export default function AppRouter() {
           <Route path="/topup" element={<TopUpPage />} />
           <Route path="/history/purchase" element={<PurchaseHistoryPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/user/:id" element={<UserProfilePage />} />
           <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/forum" element={<ForumPage />} />
+          <Route path="/forum/:id" element={<ForumDetailPage />} />
+          <Route path="/forum/create" element={<ProtectedRoute><ForumCreatePage /></ProtectedRoute>} />
+          <Route path="/forum/edit/:id" element={<ProtectedRoute><ForumEditPage /></ProtectedRoute>} />
+          <Route path="/forum/my-posts" element={<ProtectedRoute><ForumMyPostsPage /></ProtectedRoute>} />
         </Route>
 
         {/* Admin Routes (Được bảo vệ) */}
@@ -53,6 +67,7 @@ export default function AppRouter() {
             <Route path="sources" element={<AdminSourcesPage />} />
             <Route path="users" element={<AdminUsersPage />} />
             <Route path="coupons" element={<AdminCouponsPage />} />
+            <Route path="forum" element={<AdminForumPage />} />
             <Route path="notifications" element={<AdminNotificationsPage />} />
             <Route path="settings" element={<AdminSettingsPage />} />
           </Route>

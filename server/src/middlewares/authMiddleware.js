@@ -22,6 +22,18 @@ exports.authenticate = (req, res, next) => {
     }
 };
 
+exports.authenticateOptional = (req, res, next) => {
+    const token = req.cookies.token;
+    if (token) {
+        try {
+            req.user = jwtHelper.verifyToken(token);
+        } catch (e) {
+            // ignore
+        }
+    }
+    next();
+};
+
 const User = require('../models/User');
 
 exports.isAdmin = async (req, res, next) => {
