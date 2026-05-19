@@ -26,7 +26,7 @@ const siteConfig = {
   },
 
   // ===== Danh mục sản phẩm =====
-  categories: ['Website', 'Tool / Script', 'Game', 'Khác'],
+  categories: ['Website', 'Tool / Script', 'Game', 'Mobile', 'Khác'],
 
   // ===== Chính sách =====
   policyLinks: [

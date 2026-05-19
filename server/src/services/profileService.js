@@ -28,7 +28,33 @@ const updatePassword = async (userId, oldPassword, newPassword) => {
     await user.save();
 };
 
+const getPublicProfile = async (userId) => {
+    const user = await User.findById(userId).select('username fullName avatar averageRating ratingCount totalSales createdAt');
+    if (!user) {
+        const err = new Error('Người dùng không tồn tại');
+        err.statusCode = 404;
+        throw err;
+    }
+
+    const ForumPost = require('../models/ForumPost');
+    const posts = await ForumPost.find({ sellerId: userId, status: 'approved' })
+        .select('-filePath')
+        .sort({ createdAt: -1 });
+
+    let totalSales = 0;
+    posts.forEach(p => { totalSales += p.purchaseCount || 0; });
+
+    return {
+        user: {
+            ...user.toObject(),
+            totalSales
+        },
+        posts
+    };
+};
+
 module.exports = {
     updateProfile,
-    updatePassword
+    updatePassword,
+    getPublicProfile
 };

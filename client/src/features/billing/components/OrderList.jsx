@@ -30,6 +30,14 @@ const OrderList = ({ orders, handleDownload }) => {
                   className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
                 />
               </Link>
+            ) : tx.forumPostId && (tx.forumPostId.thumbnail || (tx.forumPostId.demoImages && tx.forumPostId.demoImages[0])) ? (
+              <Link to={`/forum/${tx.forumPostId._id}`} className="block w-full h-full">
+                <img
+                  src={`${siteConfig.assetBaseUrl}${tx.forumPostId.thumbnail || tx.forumPostId.demoImages[0]}`}
+                  alt={tx.forumPostId.title}
+                  className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
+                />
+              </Link>
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <Database size={18} className="text-text-muted/50" />
@@ -40,6 +48,10 @@ const OrderList = ({ orders, handleDownload }) => {
             {tx.sourceId ? (
               <Link to={`/product/${tx.sourceId._id}`} className="text-sm font-bold text-text-main truncate hover:text-primary-600 transition-colors block">
                 {tx.sourceId.title}
+              </Link>
+            ) : tx.forumPostId ? (
+              <Link to={`/forum/${tx.forumPostId._id}`} className="text-sm font-bold text-text-main truncate hover:text-primary-600 transition-colors block">
+                {tx.forumPostId.title}
               </Link>
             ) : (
               <p className="text-sm font-bold text-text-main truncate hover:text-primary-600 transition-colors">
@@ -59,7 +71,9 @@ const OrderList = ({ orders, handleDownload }) => {
             {tx.originalAmount > tx.amount && (
               <p className="text-[10px] text-text-muted line-through font-bold">{tx.originalAmount.toLocaleString()}đ</p>
             )}
-            <p className="text-sm font-extrabold text-text-main">{tx.amount.toLocaleString()}<span className="text-xs ml-0.5">đ</span></p>
+            <p className={`text-sm font-extrabold ${tx.type === 'SELLER_EARNING' ? 'text-emerald-600' : 'text-text-main'}`}>
+               {tx.type === 'SELLER_EARNING' ? '+' : ''}{tx.amount.toLocaleString()}<span className="text-xs ml-0.5">đ</span>
+            </p>
             {tx.sourceId && (
               <button
                 onClick={() => handleDownload(tx.sourceId._id)}
@@ -68,6 +82,17 @@ const OrderList = ({ orders, handleDownload }) => {
                 <Download size={14} />
                 <span className="hidden sm:inline">Clone</span>
               </button>
+            )}
+            {tx.forumPostId && tx.type === 'FORUM_PURCHASE' && (
+              <a
+                href={`${siteConfig.apiBaseUrl}/forum/posts/${tx.forumPostId._id}/download`}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-1.5 flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-white bg-emerald-50 hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg border border-emerald-100 hover:border-emerald-600 transition-all ml-auto shadow-sm"
+              >
+                <Download size={14} />
+                <span className="hidden sm:inline">Tải về</span>
+              </a>
             )}
           </div>
         </div>

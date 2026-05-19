@@ -15,8 +15,16 @@ const storage = multer.diskStorage({
             const dir = path.join(__dirname, '../../public/uploads/thumbnails');
             ensureDirExists(dir);
             cb(null, dir);
+        } else if (file.fieldname === 'forumThumbnail' || file.fieldname === 'forumDemoImages') {
+            const dir = path.join(__dirname, '../../public/uploads/forum-thumbnails');
+            ensureDirExists(dir);
+            cb(null, dir);
         } else if (file.fieldname === 'sourceFile') {
             const dir = path.join(__dirname, '../../storage/sources');
+            ensureDirExists(dir);
+            cb(null, dir);
+        } else if (file.fieldname === 'forumSourceFile') {
+            const dir = path.join(__dirname, '../../storage/forum-sources');
             ensureDirExists(dir);
             cb(null, dir);
         } else {
@@ -31,12 +39,12 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    if (file.fieldname === 'thumbnail' || file.fieldname === 'demoImages') {
+    if (file.fieldname === 'thumbnail' || file.fieldname === 'demoImages' || file.fieldname === 'forumThumbnail' || file.fieldname === 'forumDemoImages') {
         if (!file.mimetype.startsWith('image/')) {
             return cb(new Error('Chỉ chấp nhận file định dạng hình ảnh!'), false);
         }
     }
-    if (file.fieldname === 'sourceFile') {
+    if (file.fieldname === 'sourceFile' || file.fieldname === 'forumSourceFile') {
         if (!file.mimetype.includes('zip') && !file.mimetype.includes('rar') && !file.originalname.match(/\.(zip|rar)$/)) {
             return cb(new Error('Chỉ chấp nhận file nén (zip, rar)!'), false);
         }
@@ -56,4 +64,10 @@ exports.uploadSourceFiles = upload.fields([
     { name: 'thumbnail', maxCount: 1 },
     { name: 'demoImages', maxCount: 5 },
     { name: 'sourceFile', maxCount: 1 }
+]);
+
+exports.uploadForumFiles = upload.fields([
+    { name: 'forumThumbnail', maxCount: 1 },
+    { name: 'forumDemoImages', maxCount: 5 },
+    { name: 'forumSourceFile', maxCount: 1 }
 ]);

@@ -11,6 +11,7 @@ const UserDashboardLayout = ({ children, title, subtitle }) => {
     { path: '/profile', label: t('user_nav.profile'), icon: User },
     { path: '/topup', label: t('user_nav.fund'), icon: Wallet },
     { path: '/history/purchase', label: t('user_nav.history'), icon: ShoppingBag },
+    { path: '/forum/my-posts', label: 'Bài đăng diễn đàn', icon: Terminal },
   ];
 
   return (

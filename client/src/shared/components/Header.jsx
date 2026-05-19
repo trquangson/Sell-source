@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axiosClient from '@/shared/api/axiosClient';
-import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, ChevronRight, Tag, Wallet, ArrowDownCircle, ShoppingBag, Plus, Globe } from 'lucide-react';
+import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, Tag, Wallet, ShoppingBag, Plus, Globe, UserCircle } from 'lucide-react';
 import { useSite } from '@/context/SiteContext';
 import { useTranslation } from 'react-i18next';
 import NotificationBell from '@/features/notifications/components/NotificationBell';
@@ -80,7 +80,7 @@ const Header = () => {
           <nav className="hidden md:flex gap-8">
             <Link
               to="/"
-              className={`text-sm font-bold transition-colors ${location.pathname === '/' ? 'text-primary-600' : 'text-text-muted hover:text-primary-600'}`}
+              className={`px-3 py-2 rounded-lg text-sm font-bold transition-colors ${location.pathname === '/' ? 'text-primary-600 bg-primary-50' : 'text-text-muted hover:text-primary-600 hover:bg-surface-hover'}`}
             >
               {t('header.home')}
             </Link>
@@ -92,7 +92,7 @@ const Header = () => {
             >
               <Link
                 to="/products"
-                className={`text-sm font-bold transition-colors flex items-center gap-1 ${location.pathname === '/products' ? 'text-primary-600' : 'text-text-muted hover:text-primary-600'}`}
+                className={`px-3 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-1 ${location.pathname === '/products' ? 'text-primary-600 bg-primary-50' : 'text-text-muted hover:text-primary-600 hover:bg-surface-hover'}`}
               >
                 {t('header.products')}
                 <ChevronDown
@@ -139,9 +139,16 @@ const Header = () => {
 
             <Link
               to="/contact"
-              className={`text-sm font-bold transition-colors ${location.pathname === '/contact' ? 'text-primary-600' : 'text-text-muted hover:text-primary-600'}`}
+              className={`px-3 py-2 rounded-lg text-sm font-bold transition-colors ${location.pathname === '/contact' ? 'text-primary-600 bg-primary-50' : 'text-text-muted hover:text-primary-600 hover:bg-surface-hover'}`}
             >
               {t('header.contact')}
+            </Link>
+
+            <Link
+              to="/forum"
+              className={`px-3 py-2 rounded-lg text-sm font-bold transition-colors ${location.pathname.startsWith('/forum') ? 'text-primary-600 bg-primary-50' : 'text-text-muted hover:text-primary-600 hover:bg-surface-hover'}`}
+            >
+              {t('header.forum', 'Forum')}
             </Link>
           </nav>
         </div>
@@ -188,51 +195,54 @@ const Header = () => {
                 </Link>
               )}
 
-              {/* Profile Avatar */}
-              <Link
-                to="/profile"
-                className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-sm font-bold text-primary-700 hover:bg-primary-200 transition-colors border border-primary-200"
-                title={t('header.dashboard')}
-              >
-                {user.username.charAt(0).toUpperCase()}
-              </Link>
-
               {/* Notification Bell */}
               <NotificationBell user={user} />
 
-              {/* Wallet Dropdown */}
+              {/* User Dropdown */}
               <div
                 className="relative"
                 onMouseEnter={handleWalletEnter}
                 onMouseLeave={handleWalletLeave}
               >
-                <button className="flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-600 px-3 py-1.5 rounded-lg text-sm font-mono font-bold transition-colors">
-                  <Wallet size={16} />
-                  <span>{user.balance?.toLocaleString()}đ</span>
-                  <ChevronDown size={14} className={`transition-transform duration-200 ${isWalletHovered ? 'rotate-180' : ''}`} />
+                <button className="flex items-center gap-2 hover:bg-surface-hover px-2 py-1.5 rounded-lg transition-colors border border-transparent hover:border-border">
+                  <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-sm font-bold text-primary-700 border border-primary-200">
+                    {user.username.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="flex flex-col items-start text-left">
+                    <span className="text-xs font-bold text-text-main leading-none mb-1">{user.username}</span>
+                    <span className="text-[10px] font-mono font-bold text-emerald-600 leading-none">{user.balance?.toLocaleString()}đ</span>
+                  </div>
+                  <ChevronDown size={14} className={`text-text-muted transition-transform duration-200 ${isWalletHovered ? 'rotate-180' : ''}`} />
                 </button>
 
-                {/* Wallet menu */}
+                {/* Menu */}
                 <div
-                  className={`absolute top-full right-0 mt-2 w-52 bg-surface rounded-xl border border-border shadow-xl py-2 transition-all duration-200 ${isWalletHovered ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
+                  className={`absolute top-full right-0 mt-2 w-56 bg-surface rounded-xl border border-border shadow-xl py-2 transition-all duration-200 ${isWalletHovered ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
                 >
                   <div className="px-4 py-2.5 border-b border-border">
-                    <p className="text-xs text-text-muted font-mono font-bold uppercase">{t('header.fund_account')}</p>
+                    <p className="text-xs text-text-muted font-mono font-bold uppercase">{t('header.dashboard', 'Dashboard')}</p>
                     <p className="text-base font-extrabold text-emerald-600 font-mono mt-0.5">{user.balance?.toLocaleString()}đ</p>
                   </div>
+                  
+                  <Link to="/profile" className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-text-muted hover:bg-surface-hover hover:text-primary-600 transition-colors">
+                    <div className="w-4 h-4 flex items-center justify-center"><UserCircle size={16} /></div> {t('user_nav.profile', 'Hồ sơ')}
+                  </Link>
+
                   <Link to="/topup" className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-emerald-600 hover:bg-surface-hover transition-colors">
-                    <Plus size={16} /> {t('header.fund_account')}
+                    <div className="w-4 h-4 flex items-center justify-center"><Plus size={16} /></div> {t('header.fund_account')}
                   </Link>
-                  <div className="h-px bg-border mx-3" />
+                  
                   <Link to="/history/purchase" className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-text-muted hover:bg-surface-hover hover:text-primary-600 transition-colors">
-                    <ShoppingBag size={16} /> {t('header.transaction_logs')}
+                    <div className="w-4 h-4 flex items-center justify-center"><ShoppingBag size={16} /></div> {t('header.transaction_logs')}
                   </Link>
+
+                  <div className="h-px bg-border mx-3 my-1" />
+                  
+                  <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-50 transition-colors">
+                    <div className="w-4 h-4 flex items-center justify-center"><LogOut size={16} /></div> {t('header.logout')}
+                  </button>
                 </div>
               </div>
-
-              <button onClick={handleLogout} className="p-2 text-text-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title={t('header.logout')}>
-                <LogOut size={18} />
-              </button>
             </div>
           ) : (
             <div className="hidden md:flex items-center space-x-3">
@@ -320,6 +330,14 @@ const Header = () => {
               className={`p-3 rounded-lg text-sm font-bold ${location.pathname === '/contact' ? 'bg-primary-50 text-primary-600' : 'text-text-muted hover:bg-surface-hover'}`}
             >
               {t('header.contact')}
+            </Link>
+
+            <Link
+              to="/forum"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`p-3 rounded-lg text-sm font-bold ${location.pathname.startsWith('/forum') ? 'bg-primary-50 text-primary-600' : 'text-text-muted hover:bg-surface-hover'}`}
+            >
+              {t('header.forum', 'Forum')}
             </Link>
             
             <div className="flex items-center justify-between p-3">

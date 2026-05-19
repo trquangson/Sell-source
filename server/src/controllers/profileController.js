@@ -40,3 +40,12 @@ exports.updatePassword = async (req, res) => {
         res.status(400).json({ success: false, message: error.message });
     }
 };
+
+exports.getPublicProfile = async (req, res) => {
+    try {
+        const profile = await profileService.getPublicProfile(req.params.id);
+        res.json({ success: true, profile });
+    } catch (error) {
+        res.status(error.statusCode || 400).json({ success: false, message: error.message });
+    }
+};

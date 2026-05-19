@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { authApi } from '@/features/auth/api/authApi';
 import { adminApi } from '@/features/admin/api/adminApi';
-import { Shield, ShieldAlert, Trash2, AlertCircle } from 'lucide-react';
+import { Shield, ShieldAlert, Trash2, AlertCircle, Edit2 } from 'lucide-react';
 import ConfirmModal from '@/shared/components/ConfirmModal';
 
 const AdminUsersPage = () => {
@@ -42,6 +42,26 @@ const AdminUsersPage = () => {
       fetchUsers(); // Cập nhật lại danh sách
     } catch (error) {
       alert(error.response?.data?.message || 'Lỗi cập nhật quyền');
+    }
+  };
+
+  const handleEditBalance = async (user) => {
+    const currentBalance = user.balance || 0;
+    const input = window.prompt(`Nhập số dư mới cho người dùng ${user.username}:`, currentBalance);
+    
+    if (input === null) return; // User cancelled
+    
+    const newBalance = Number(input);
+    if (isNaN(newBalance) || newBalance < 0) {
+      alert('Số dư không hợp lệ!');
+      return;
+    }
+
+    try {
+      await adminApi.updateUserBalance(user._id, newBalance);
+      fetchUsers();
+    } catch (error) {
+      alert(error.response?.data?.message || 'Lỗi cập nhật số dư');
     }
   };
 
@@ -98,7 +118,16 @@ const AdminUsersPage = () => {
                         </div>
                       </td>
                       <td className="p-4 font-medium text-slate-700 whitespace-nowrap">
-                        {user.balance?.toLocaleString()}đ
+                        <div className="flex items-center gap-2">
+                          <span>{user.balance?.toLocaleString()}đ</span>
+                          <button 
+                            onClick={() => handleEditBalance(user)} 
+                            className="p-1.5 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded transition-colors"
+                            title="Sửa số dư"
+                          >
+                            <Edit2 size={14} />
+                          </button>
+                        </div>
                       </td>
                       <td className="p-4 whitespace-nowrap">
                         <select 

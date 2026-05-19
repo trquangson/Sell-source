@@ -9,7 +9,7 @@ const transactionSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['DEPOSIT', 'PURCHASE'],
+        enum: ['DEPOSIT', 'PURCHASE', 'FORUM_PURCHASE', 'SELLER_EARNING'],
         required: true
     },
     amount: {
@@ -38,6 +38,11 @@ const transactionSchema = new mongoose.Schema({
     sourceId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'SourceCode',
+        default: null
+    },
+    forumPostId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ForumPost',
         default: null
     },
     originalAmount: {
