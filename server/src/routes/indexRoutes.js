@@ -1,13 +1,13 @@
-const authRoutes = require('./authRoutes');
-const adminRoutes = require('./adminRoutes');
-const sourceRoutes = require('./sourceRoutes');
-const couponRoutes = require('./couponRoutes');
-const paymentRoutes = require('./paymentRoutes');
+const authRoutes = require('./client/authRoutes');
+const adminRoutes = require('./admin/adminRoutes');
+const sourceRoutes = require('./client/sourceRoutes');
+const couponRoutes = require('./client/couponRoutes');
+const paymentRoutes = require('./client/paymentRoutes');
 const webhookRoutes = require('./webhookRoutes');
-const settingRoutes = require('./settingRoutes');
-const profileRoutes = require('./profileRoutes');
-const notificationRoutes = require('./notificationRoutes');
-const forumRoutes = require('./forumRoutes');
+const settingRoutes = require('./client/settingRoutes');
+const profileRoutes = require('./client/profileRoutes');
+const notificationRoutes = require('./client/notificationRoutes');
+const forumRoutes = require('./client/forumRoutes');
 
 module.exports = (app) => {
     app.use('/api/auth', authRoutes);

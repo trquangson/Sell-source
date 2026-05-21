@@ -1,5 +1,5 @@
 const webhookService = require('../services/webhookService');
-const settingService = require('../services/settingService');
+const settingService = require('../services/client/clientSettingService');
 
 /**
  * POST /api/webhook/sepay

@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const Transaction = require('../models/Transaction');
-const notificationService = require('./notificationService');
+const notificationService = require('./client/clientNotificationService');
 
 const TRANSFER_PREFIX = process.env.TRANSFER_PREFIX || 'SS';
 

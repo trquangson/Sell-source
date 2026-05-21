@@ -140,7 +140,8 @@
   "user_nav": {
     "profile": "Hồ sơ",
     "fund": "Nạp tiền",
-    "history": "Lịch sử mua"
+    "history": "Lịch sử mua",
+    "forum_posts": "Bài đăng diễn đàn"
   },
   "topup": {
     "title": "Nạp tiền vào tài khoản",
@@ -197,7 +198,6 @@
   "auth": {
     "login": {
       "title": "Đăng nhập hệ thống",
-      "subtitle": "Truy cập nền tảng SellSource của bạn",
       "no_account": "Chưa có tài khoản?",
       "create_account": "Tạo tài khoản mới",
       "username_label": "Tên đăng nhập",
@@ -210,7 +210,6 @@
     },
     "register": {
       "title": "Tạo tài khoản mới",
-      "subtitle": "Tham gia cộng đồng và khám phá mã nguồn chất lượng",
       "has_account": "Bạn đã có tài khoản?",
       "login_here": "Đăng nhập tại đây",
       "fullname_label": "Họ và tên",
@@ -224,7 +223,9 @@
   "common": {
     "previous": "Trước",
     "next": "Sau",
-    "package": "Mã nguồn"
+    "package": "Mã nguồn",
+    "clone": "Tải xuống",
+    "download": "Tải về"
   },
   "site": {
     "tagline": "Nền tảng mua bán mã nguồn uy tín",
@@ -275,6 +276,21 @@
     "subtitle": "Nơi chia sẻ và giao dịch các dự án chất lượng từ cộng đồng",
     "create_post": "Đăng bán mã nguồn",
     "my_posts": "Bài đăng của tôi",
+    "my_posts_title": "Bài Đăng Của Tôi",
+    "my_posts_subtitle": "Quản lý các mã nguồn bạn đang bán trên diễn đàn.",
+    "create_new_post": "Đăng bài mới",
+    "no_posts": "Bạn chưa đăng bán mã nguồn nào.",
+    "post_first": "Đăng bài đầu tiên ngay",
+    "product_name": "Tên sản phẩm",
+    "price": "Giá bán",
+    "purchases": "Lượt mua",
+    "status": "Trạng thái",
+    "actions": "Thao tác",
+    "status_approved": "Đã duyệt",
+    "status_pending": "Chờ duyệt",
+    "status_rejected": "Từ chối",
+    "status_hidden": "Đã ẩn",
+    "reason": "Lý do: ",
     "tab_all": "Tất cả",
     "tab_pending": "Chờ duyệt",
     "tab_approved": "Đã duyệt",

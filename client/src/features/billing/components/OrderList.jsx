@@ -80,7 +80,7 @@ const OrderList = ({ orders, handleDownload }) => {
                 className="mt-1.5 flex items-center gap-1.5 text-xs font-bold text-primary-600 hover:text-white bg-primary-50 hover:bg-primary-600 px-2.5 py-1.5 rounded-lg border border-primary-100 hover:border-primary-600 transition-all ml-auto shadow-sm"
               >
                 <Download size={14} />
-                <span className="hidden sm:inline">Clone</span>
+                <span className="hidden sm:inline">{t('common.clone')}</span>
               </button>
             )}
             {tx.forumPostId && tx.type === 'FORUM_PURCHASE' && (
@@ -91,7 +91,7 @@ const OrderList = ({ orders, handleDownload }) => {
                 className="mt-1.5 flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-white bg-emerald-50 hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg border border-emerald-100 hover:border-emerald-600 transition-all ml-auto shadow-sm"
               >
                 <Download size={14} />
-                <span className="hidden sm:inline">Tải về</span>
+                <span className="hidden sm:inline">{t('common.download')}</span>
               </a>
             )}
           </div>

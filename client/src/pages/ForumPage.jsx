@@ -80,21 +80,21 @@ const ForumPage = () => {
           </form>
 
           <div className="flex gap-3">
-            <div className="relative">
+            <div className="relative flex-1 md:flex-none">
               <select
                 value={category}
                 onChange={(e) => { setCategory(e.target.value === 'Tất cả' ? '' : e.target.value); setPage(1); }}
-                className="appearance-none bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block px-4 py-2.5 pr-10 outline-none cursor-pointer font-medium w-full min-w-[140px]"
+                className="appearance-none bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block px-4 py-2.5 pr-10 outline-none cursor-pointer font-medium w-full md:min-w-[140px]"
               >
                 {categories.map(cat => (
-                  <option key={cat} value={cat}>{cat === '' ? 'Danh mục' : cat}</option>
+                  <option key={cat} value={cat}>{cat === '' ? t('forum.category', 'Danh mục') : cat}</option>
                 ))}
               </select>
               <ChevronDown size={16} className="text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
-            <div className="relative hidden md:block">
-              <select className="appearance-none bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block px-4 py-2.5 pr-10 outline-none cursor-pointer font-medium min-w-[140px]">
+            <div className="relative flex-1 md:flex-none">
+              <select className="appearance-none bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block px-4 py-2.5 pr-10 outline-none cursor-pointer font-medium w-full md:min-w-[140px]">
                 <option value="newest">{t('forum.sort_newest')}</option>
                 <option value="popular">{t('forum.sort_views_desc')}</option>
                 <option value="price_asc">{t('forum.sort_price_asc')}</option>

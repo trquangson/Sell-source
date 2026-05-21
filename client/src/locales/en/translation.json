@@ -139,7 +139,8 @@
   "user_nav": {
     "profile": "Profile",
     "fund": "Fund",
-    "history": "History"
+    "history": "History",
+    "forum_posts": "Forum Posts"
   },
   "topup": {
     "title": "Fund Account",
@@ -196,7 +197,6 @@
   "auth": {
     "login": {
       "title": "Sign In",
-      "subtitle": "Access your SellSource platform",
       "no_account": "Don't have an account?",
       "create_account": "Create new account",
       "username_label": "Username",
@@ -209,7 +209,6 @@
     },
     "register": {
       "title": "Create new account",
-      "subtitle": "Join the community and explore premium source codes",
       "has_account": "Already have an account?",
       "login_here": "Sign in here",
       "fullname_label": "Full Name",
@@ -223,7 +222,9 @@
   "common": {
     "previous": "Prev",
     "next": "Next",
-    "package": "Repository"
+    "package": "Repository",
+    "clone": "Clone",
+    "download": "Download"
   },
   "site": {
     "tagline": "The most trusted source code marketplace",
@@ -274,6 +275,21 @@
     "subtitle": "Share and trade high-quality projects from the community",
     "create_post": "Sell Source Code",
     "my_posts": "My Posts",
+    "my_posts_title": "My Posts",
+    "my_posts_subtitle": "Manage the source codes you are selling on the forum.",
+    "create_new_post": "Create new post",
+    "no_posts": "You haven't posted any source code for sale yet.",
+    "post_first": "Post your first source code now",
+    "product_name": "Product Name",
+    "price": "Price",
+    "purchases": "Purchases",
+    "status": "Status",
+    "actions": "Actions",
+    "status_approved": "Approved",
+    "status_pending": "Pending",
+    "status_rejected": "Rejected",
+    "status_hidden": "Hidden",
+    "reason": "Reason: ",
     "tab_all": "All",
     "tab_pending": "Pending",
     "tab_approved": "Approved",
