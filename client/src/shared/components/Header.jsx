@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axiosClient from '@/shared/api/axiosClient';
-import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, Tag, Wallet, ShoppingBag, Plus, Globe, UserCircle } from 'lucide-react';
+import { LayoutDashboard, LogOut, Search, Menu, X, ChevronDown, Tag, Wallet, ShoppingBag, Plus, Globe, UserCircle, MessageSquare } from 'lucide-react';
 import { useSite } from '@/context/SiteContext';
 import { useTranslation } from 'react-i18next';
 import NotificationBell from '@/features/notifications/components/NotificationBell';
@@ -235,6 +235,10 @@ const Header = () => {
                   <Link to="/history/purchase" className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-text-muted hover:bg-surface-hover hover:text-primary-600 transition-colors">
                     <div className="w-4 h-4 flex items-center justify-center"><ShoppingBag size={16} /></div> {t('header.transaction_logs')}
                   </Link>
+                  
+                  <Link to="/forum/my-posts" className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-text-muted hover:bg-surface-hover hover:text-primary-600 transition-colors">
+                    <div className="w-4 h-4 flex items-center justify-center"><MessageSquare size={16} /></div> {t('user_nav.forum_posts')}
+                  </Link>
 
                   <div className="h-px bg-border mx-3 my-1" />
                   
@@ -362,22 +366,30 @@ const Header = () => {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-3 gap-2">
                   <Link
                     to="/topup"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex flex-col items-center gap-1 p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-xl transition-colors text-center border border-emerald-200"
+                    className="flex flex-col items-center gap-1 p-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-xl transition-colors text-center border border-emerald-200"
                   >
                     <Plus size={16} />
-                    <span className="text-xs font-bold">{t('header.fund_account')}</span>
+                    <span className="text-[10px] font-bold truncate w-full">{t('header.fund_account')}</span>
                   </Link>
                   <Link
                     to="/history/purchase"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex flex-col items-center gap-1 p-3 bg-white border border-border text-text-muted hover:text-primary-600 rounded-xl transition-colors text-center shadow-sm"
+                    className="flex flex-col items-center gap-1 p-2 bg-white border border-border text-text-muted hover:text-primary-600 rounded-xl transition-colors text-center shadow-sm overflow-hidden"
                   >
                     <ShoppingBag size={16} />
-                    <span className="text-xs font-bold">{t('header.transaction_logs')}</span>
+                    <span className="text-[10px] font-bold truncate w-full">{t('header.transaction_logs')}</span>
+                  </Link>
+                  <Link
+                    to="/forum/my-posts"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex flex-col items-center gap-1 p-2 bg-white border border-border text-text-muted hover:text-primary-600 rounded-xl transition-colors text-center shadow-sm overflow-hidden"
+                  >
+                    <MessageSquare size={16} />
+                    <span className="text-[10px] font-bold truncate w-full">{t('user_nav.forum_posts')}</span>
                   </Link>
                 </div>
 

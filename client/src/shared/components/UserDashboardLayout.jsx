@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { User, Wallet, ShoppingBag, Terminal } from 'lucide-react';
+import { User, Wallet, ShoppingBag, Terminal, MessageSquare } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const UserDashboardLayout = ({ children, title, subtitle }) => {
@@ -11,7 +11,7 @@ const UserDashboardLayout = ({ children, title, subtitle }) => {
     { path: '/profile', label: t('user_nav.profile'), icon: User },
     { path: '/topup', label: t('user_nav.fund'), icon: Wallet },
     { path: '/history/purchase', label: t('user_nav.history'), icon: ShoppingBag },
-    { path: '/forum/my-posts', label: t('user_nav.forum_posts'), icon: Terminal },
+    { path: '/forum/my-posts', label: t('user_nav.forum_posts'), icon: MessageSquare },
   ];
 
   return (

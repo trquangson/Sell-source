@@ -246,7 +246,7 @@ exports.deletePost = async (userId, id) => {
 };
 
 exports.getPublicPosts = async (query) => {
-    const { search, category, page = 1, limit = 12 } = query;
+    const { search, category, sort, page = 1, limit = 12 } = query;
     const filter = { status: 'approved' };
 
     if (search) {
@@ -256,13 +256,22 @@ exports.getPublicPosts = async (query) => {
         filter.category = category;
     }
 
+    let sortObj = { createdAt: -1 };
+    if (sort === 'popular') {
+        sortObj = { views: -1 };
+    } else if (sort === 'price_asc') {
+        sortObj = { price: 1 };
+    } else if (sort === 'price_desc') {
+        sortObj = { price: -1 };
+    }
+
     const skip = (page - 1) * limit;
 
     const [posts, total] = await Promise.all([
         ForumPost.find(filter)
             .select('-filePath')
             .populate('sellerId', 'username fullName avatar averageRating ratingCount')
-            .sort({ createdAt: -1 })
+            .sort(sortObj)
             .skip(skip)
             .limit(Number(limit)),
         ForumPost.countDocuments(filter)
