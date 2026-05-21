@@ -10,3 +10,5 @@ server/storage/sources/*
 server/storage/forum-sources/*
 !server/storage/forum-sources/.gitkeep
 .agents
+server/logs/*
+!server/logs/.gitkeep
