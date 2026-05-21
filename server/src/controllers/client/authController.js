@@ -69,3 +69,44 @@ exports.getMe = async (req, res) => {
         });
     }
 };
+
+exports.forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ success: false, message: 'Vui lòng cung cấp email.' });
+        }
+        await authService.forgotPassword(email);
+        res.status(200).json({
+            success: true,
+            message: 'Email khôi phục mật khẩu đã được gửi!'
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message || 'Đã có lỗi xảy ra.'
+        });
+    }
+};
+
+exports.resetPassword = async (req, res) => {
+    try {
+        const { token } = req.params;
+        const { password } = req.body;
+
+        if (!password || password.length < 6) {
+            return res.status(400).json({ success: false, message: 'Mật khẩu phải có ít nhất 6 ký tự.' });
+        }
+
+        await authService.resetPassword(token, password);
+        res.status(200).json({
+            success: true,
+            message: 'Đặt lại mật khẩu thành công!'
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message || 'Đã có lỗi xảy ra.'
+        });
+    }
+};

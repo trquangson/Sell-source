@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RegisterPage from '@/pages/RegisterPage';
 import LoginPage from '@/pages/LoginPage';
+import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
+import ResetPasswordPage from '@/pages/ResetPasswordPage';
 import Home from '@/pages/Home';
 import ProductsPage from '@/pages/ProductsPage';
 import ProductDetailPage from '@/pages/ProductDetailPage';
@@ -40,6 +42,8 @@ export default function AppRouter() {
         <Route element={<PublicLayout />}>
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         </Route>
 
         {/* Public Routes với Header/Footer */}

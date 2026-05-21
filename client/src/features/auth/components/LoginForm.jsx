@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { authApi } from '@/features/auth/api/authApi';
 import { Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -67,9 +67,9 @@ const LoginForm = () => {
               {t('auth.login.password_label', 'Mật khẩu')}
             </label>
             <div className="text-sm">
-              <a href="#" className="font-bold text-primary-600 hover:text-primary-700 transition-colors">
+              <Link to="/forgot-password" className="font-bold text-primary-600 hover:text-primary-700 transition-colors">
                 {t('auth.login.forgot_password', 'Quên mật khẩu?')}
-              </a>
+              </Link>
             </div>
           </div>
           <input
