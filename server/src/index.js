@@ -17,6 +17,8 @@ const PORT = process.env.PORT || 3000;
 
 const database = require("./config/database");
 
+app.set('trust proxy', 1);
+
 app.use(helmet({
     crossOriginResourcePolicy: false, // Cho phép load ảnh/file tĩnh từ client (khác port)
 }));

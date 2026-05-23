@@ -9,8 +9,11 @@ const profileRoutes = require('./client/profileRoutes');
 const notificationRoutes = require('./client/notificationRoutes');
 const forumRoutes = require('./client/forumRoutes');
 const chatRoutes = require('./chatRoutes');
+const { globalLimiter } = require('../middlewares/rateLimitMiddleware');
 
 module.exports = (app) => {
+    app.use('/api', globalLimiter);
+
     app.use('/api/auth', authRoutes);
     app.use('/api/admin', adminRoutes);
     app.use('/api/sources', sourceRoutes);
