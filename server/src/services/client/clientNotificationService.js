@@ -1,7 +1,12 @@
 const Notification = require('../../models/Notification');
+const EventEmitter = require('events');
+
+const notificationEmitter = new EventEmitter();
 
 const createNotification = async ({ userId, type, title, message, metadata = {} }) => {
-    return Notification.create({ userId, type, title, message, metadata, isGlobal: false });
+    const notification = await Notification.create({ userId, type, title, message, metadata, isGlobal: false });
+    notificationEmitter.emit('new_notification', notification);
+    return notification;
 };
 
 /**
@@ -108,6 +113,7 @@ const softDeleteNotification = async (userId, notificationId) => {
 };
 
 module.exports = {
+    notificationEmitter,
     createNotification,
     getUserNotifications,
     getUnreadCount,

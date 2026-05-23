@@ -1,13 +1,11 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { notificationApi } from '../api/notificationApi';
-
-const POLL_INTERVAL_MS = 10_000;
+import siteConfig from '@/config/siteConfig';
 
 export const useNotifications = (isLoggedIn) => {
     const [notifications, setNotifications] = useState([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const [loading, setLoading] = useState(false);
-    const intervalRef = useRef(null);
 
     const fetchAll = useCallback(async () => {
         if (!isLoggedIn) return;
@@ -42,11 +40,29 @@ export const useNotifications = (isLoggedIn) => {
         fetchAll();
         fetchUnreadCount();
 
-        intervalRef.current = setInterval(() => {
-            refresh();
-        }, POLL_INTERVAL_MS);
+        const eventSource = new EventSource(`${siteConfig.apiBaseUrl}/notifications/stream`, {
+            withCredentials: true
+        });
 
-        return () => clearInterval(intervalRef.current);
+        eventSource.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.type === 'new_notification' && data.payload) {
+                    setNotifications(prev => [data.payload, ...prev]);
+                    setUnreadCount(prev => prev + 1);
+                }
+            } catch (err) {
+                console.error('Lỗi khi phân tích dữ liệu SSE:', err);
+            }
+        };
+
+        eventSource.onerror = (error) => {
+            // Không log lặp lại khi mất mạng
+        };
+
+        return () => {
+            eventSource.close();
+        };
     }, [isLoggedIn, fetchAll, fetchUnreadCount]);
 
     const markRead = useCallback(async (id) => {

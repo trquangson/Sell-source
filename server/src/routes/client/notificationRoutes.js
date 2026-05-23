@@ -6,11 +6,13 @@ const {
     getUnreadCount,
     markAsRead,
     markAllAsRead,
-    softDelete
+    softDelete,
+    streamNotifications
 } = require('../../controllers/client/notificationController');
 
 router.use(authenticate);
 
+router.get('/stream', streamNotifications);
 router.get('/', getNotifications);
 router.get('/unread-count', getUnreadCount);
 router.patch('/read-all', markAllAsRead);

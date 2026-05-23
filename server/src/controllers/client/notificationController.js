@@ -59,3 +59,31 @@ exports.softDelete = async (req, res) => {
         res.status(500).json({ success: false, message: 'Lỗi máy chủ' });
     }
 };
+
+exports.streamNotifications = (req, res) => {
+    // Cấu hình headers cho Server-Sent Events (SSE)
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    // Gửi một sự kiện khởi tạo ngay lập tức để mở kết nối
+    res.write(`data: ${JSON.stringify({ type: 'connected' })}\n\n`);
+
+    const userId = req.user.userId;
+
+    // Lắng nghe sự kiện new_notification
+    const handleNewNotification = (notification) => {
+        // Chỉ gửi nếu notification là global hoặc thuộc về user hiện tại
+        if (notification.isGlobal || notification.userId?.toString() === userId.toString()) {
+            res.write(`data: ${JSON.stringify({ type: 'new_notification', payload: notification })}\n\n`);
+        }
+    };
+
+    const { notificationEmitter } = require('../../services/client/clientNotificationService');
+    notificationEmitter.on('new_notification', handleNewNotification);
+
+    // Dọn dẹp listener khi client ngắt kết nối
+    req.on('close', () => {
+        notificationEmitter.removeListener('new_notification', handleNewNotification);
+    });
+};

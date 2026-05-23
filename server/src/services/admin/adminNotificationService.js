@@ -1,7 +1,10 @@
 const Notification = require('../../models/Notification');
+const { notificationEmitter, createNotification } = require('../client/clientNotificationService');
 
 const createGlobalNotification = async ({ type = 'ADMIN', title, message, metadata = {} }) => {
-    return Notification.create({ userId: null, type, title, message, metadata, isGlobal: true });
+    const notification = await Notification.create({ userId: null, type, title, message, metadata, isGlobal: true });
+    notificationEmitter.emit('new_notification', notification);
+    return notification;
 };
 
 // Admin: lấy danh sách tất cả noti admin đã gửi
@@ -28,6 +31,7 @@ const deleteNotification = async (notificationId) => {
 
 module.exports = {
     createGlobalNotification,
+    createNotification,
     getAdminSentNotifications,
     deleteNotification
 };
