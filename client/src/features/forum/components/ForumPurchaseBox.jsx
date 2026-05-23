@@ -42,7 +42,7 @@ const ForumPurchaseBox = ({ post, initialPurchased, onPurchaseSuccess }) => {
     }
 
     if (user._id === post.sellerId?._id || user.id === post.sellerId?._id) {
-      setError(t('forum.cannot_buy_own'));
+      setError(t('forum.cannot_buy_own', 'Bạn không thể mua bài viết của chính mình'));
       setShowConfirm(false);
       return;
     }
@@ -78,7 +78,7 @@ const ForumPurchaseBox = ({ post, initialPurchased, onPurchaseSuccess }) => {
 
       const resBlob = await forumApi.downloadPost(post._id); // I need to create a download method in forumApi that returns blob or just open window
     } catch (err) {
-      setError('Lỗi khi tải file');
+      setError(t('forum.download_error', 'Lỗi khi tải file'));
     } finally {
       setDownloading(false);
     }
@@ -133,11 +133,11 @@ const ForumPurchaseBox = ({ post, initialPurchased, onPurchaseSuccess }) => {
         )}
 
         <div className="mt-4 pt-4 border-t border-slate-100">
-          <p className="text-sm font-bold text-slate-800 mb-3">{t('forum.you_will_get')}</p>
+          <p className="text-sm font-bold text-slate-800 mb-3">{t('forum.you_will_get', 'Bạn sẽ nhận được gì?')}</p>
           <ul className="space-y-2 text-sm text-slate-600">
-            <li className="flex items-center gap-2"><div className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-[10px]">✓</div> {t('forum.full_source_code')}</li>
-            <li className="flex items-center gap-2"><div className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-[10px]">✓</div> {t('forum.documentation')}</li>
-            <li className="flex items-center gap-2"><div className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-[10px]">✓</div> {t('forum.support_30_days')}</li>
+            <li className="flex items-center gap-2"><div className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-[10px]">✓</div> {t('forum.full_source_code', 'Mã nguồn đầy đủ')}</li>
+            <li className="flex items-center gap-2"><div className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-[10px]">✓</div> {t('forum.documentation', 'Tài liệu hướng dẫn')}</li>
+            <li className="flex items-center gap-2"><div className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-[10px]">✓</div> {t('forum.support_30_days', 'Hỗ trợ 30 ngày')}</li>
           </ul>
         </div>
       </div>

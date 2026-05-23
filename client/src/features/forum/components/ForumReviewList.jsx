@@ -36,11 +36,11 @@ const ForumReviewList = ({ postId, user, alreadyPurchased }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
-      setError('Vui lòng đăng nhập để đánh giá');
+      setError(t('forum.login_to_review', 'Vui lòng đăng nhập để đánh giá'));
       return;
     }
     if (!comment.trim()) {
-      setError('Vui lòng nhập nội dung đánh giá');
+      setError(t('forum.empty_review', 'Vui lòng nhập nội dung đánh giá'));
       return;
     }
 
@@ -49,12 +49,12 @@ const ForumReviewList = ({ postId, user, alreadyPurchased }) => {
     setSuccess('');
     try {
       await forumApi.addPostReview(postId, { rating, comment });
-      setSuccess('Thêm đánh giá thành công');
+      setSuccess(t('forum.review_success', 'Thêm đánh giá thành công'));
       setComment('');
       setRating(5);
       fetchReviews();
     } catch (err) {
-      setError(err.response?.data?.message || 'Có lỗi xảy ra');
+      setError(err.response?.data?.message || t('forum.review_error', 'Có lỗi xảy ra'));
     } finally {
       setSubmitting(false);
     }
@@ -96,7 +96,7 @@ const ForumReviewList = ({ postId, user, alreadyPurchased }) => {
                 <textarea
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Chia sẻ trải nghiệm của bạn về mã nguồn này..."
+                  placeholder={t('forum.review_placeholder', 'Chia sẻ trải nghiệm của bạn về mã nguồn này...')}
                   className="w-full bg-white border border-slate-200 rounded-xl p-4 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none resize-none min-h-[100px]"
                 ></textarea>
               </div>
