@@ -4,6 +4,7 @@ import axiosClient from '@/shared/api/axiosClient';
 import { useTranslation } from 'react-i18next';
 import { forumApi } from '../api/forumApi';
 import ConfirmModal from '@/shared/components/ConfirmModal';
+import siteConfig from '@/config/siteConfig';
 
 const ForumPurchaseBox = ({ post, initialPurchased, onPurchaseSuccess }) => {
   const { t } = useTranslation();
@@ -66,7 +67,7 @@ const ForumPurchaseBox = ({ post, initialPurchased, onPurchaseSuccess }) => {
     try {
       const response = await forumApi.getPostById(post._id); // Just a ping to check auth if needed, but we can call download endpoint directly via window.open or fetch blob
       // Best way to download via authenticated API:
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/forum/posts/${post._id}/download`, {
+      const res = await fetch(`${siteConfig.apiBaseUrl}/forum/posts/${post._id}/download`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}` // If using Bearer, or relies on cookies
         },
@@ -83,7 +84,7 @@ const ForumPurchaseBox = ({ post, initialPurchased, onPurchaseSuccess }) => {
     }
   };
 
-  const handleDownloadHref = `${import.meta.env.VITE_API_URL}/api/forum/posts/${post._id}/download`;
+  const handleDownloadHref = `${siteConfig.apiBaseUrl}/forum/posts/${post._id}/download`;
 
   return (
     <div className="w-full flex flex-col bg-white">

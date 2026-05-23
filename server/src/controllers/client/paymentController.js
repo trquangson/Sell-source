@@ -47,7 +47,7 @@ exports.download = async (req, res) => {
             return res.status(404).json({ success: false, message: 'File không tồn tại' });
         }
 
-        const absolutePath = path.join(__dirname, '../../storage/sources', source.filePath);
+        const absolutePath = path.join(__dirname, '../../../storage/sources', source.filePath);
         if (!fs.existsSync(absolutePath)) {
             return res.status(404).json({ success: false, message: 'File không tìm thấy trên server' });
         }

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Bot } from 'lucide-react';
 import siteConfig from '@/config/siteConfig';
+import AIChatBox from './AIChatBox';
 
 const FloatingActions = () => {
   const [visible, setVisible] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 300);
@@ -15,11 +17,15 @@ const FloatingActions = () => {
 
   return (
     <>
-      {/* CSS animation riêng cho Zalo */}
+      {/* CSS animation riêng cho Zalo và Bot */}
       <style>{`
         @keyframes zalo-pulse {
           0%, 100% { box-shadow: 0 0 0 0 rgba(0, 104, 255, 0.5); }
           50% { box-shadow: 0 0 0 10px rgba(0, 104, 255, 0); }
+        }
+        @keyframes bot-pulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.5); }
+          50% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
         }
         @keyframes zalo-ring {
           0%, 100% { transform: rotate(0deg) scale(1); }
@@ -36,9 +42,28 @@ const FloatingActions = () => {
           animation: none;
           transform: scale(1.1) translateY(-2px);
         }
+        .bot-btn {
+          animation: bot-pulse 2s ease-in-out infinite;
+        }
+        .bot-btn:hover {
+          animation: none;
+          transform: scale(1.1) translateY(-2px);
+        }
       `}</style>
 
+      {/* Cửa sổ Chat AI */}
+      <AIChatBox isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+
       <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col items-center gap-2 md:gap-3">
+        {/* Nút Bot AI Chat */}
+        <button
+          onClick={() => setIsChatOpen(!isChatOpen)}
+          title="Chat với AI"
+          className="bot-btn w-11 h-11 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white flex items-center justify-center shadow-lg transition-all duration-200"
+        >
+          <Bot className="w-6 h-6" />
+        </button>
+
         {/* Nút Zalo — luôn hiển thị, có animation pulse + ring */}
         <a
           href={siteConfig.socials.zalo}

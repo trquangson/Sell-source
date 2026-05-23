@@ -8,6 +8,7 @@ const settingRoutes = require('./client/settingRoutes');
 const profileRoutes = require('./client/profileRoutes');
 const notificationRoutes = require('./client/notificationRoutes');
 const forumRoutes = require('./client/forumRoutes');
+const chatRoutes = require('./chatRoutes');
 
 module.exports = (app) => {
     app.use('/api/auth', authRoutes);
@@ -20,4 +21,5 @@ module.exports = (app) => {
     app.use('/api/profile', profileRoutes);
     app.use('/api/notifications', notificationRoutes);
     app.use('/api/forum', forumRoutes);
+    app.use('/api/chat', chatRoutes);
 }

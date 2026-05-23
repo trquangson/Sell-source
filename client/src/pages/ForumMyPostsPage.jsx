@@ -5,6 +5,7 @@ import { Edit2, Trash2, Eye, Plus, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ConfirmModal from '@/shared/components/ConfirmModal';
 import { useTranslation } from 'react-i18next';
+import siteConfig from '@/config/siteConfig';
 
 const ForumMyPostsPage = () => {
   const [posts, setPosts] = useState([]);
@@ -98,7 +99,7 @@ const ForumMyPostsPage = () => {
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 rounded-lg bg-slate-200 overflow-hidden flex-shrink-0">
                             {(post.thumbnail || (post.demoImages && post.demoImages[0])) ? (
-                              <img src={`${import.meta.env.VITE_API_URL}${post.thumbnail || post.demoImages[0]}`} className="w-full h-full object-cover" alt="" />
+                              <img src={`${siteConfig.assetBaseUrl}${post.thumbnail || post.demoImages[0]}`} className="w-full h-full object-cover" alt="" />
                             ) : null}
                           </div>
                           <div>

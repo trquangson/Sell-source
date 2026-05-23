@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Download, Star, Code, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import siteConfig from '@/config/siteConfig';
 
 const ForumPostCard = ({ post }) => {
   const { t } = useTranslation();
@@ -10,8 +11,8 @@ const ForumPostCard = ({ post }) => {
   };
 
   const getThumbnail = () => {
-    if (post.thumbnail) return `${import.meta.env.VITE_API_URL}${post.thumbnail}`;
-    if (post.demoImages && post.demoImages.length > 0) return `${import.meta.env.VITE_API_URL}${post.demoImages[0]}`;
+    if (post.thumbnail) return `${siteConfig.assetBaseUrl}${post.thumbnail}`;
+    if (post.demoImages && post.demoImages.length > 0) return `${siteConfig.assetBaseUrl}${post.demoImages[0]}`;
     return 'https://placehold.co/600x400/1e293b/334155?text=No+Image';
   };
 
