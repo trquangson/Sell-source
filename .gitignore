@@ -12,3 +12,4 @@ server/storage/forum-sources/*
 .agents
 server/logs/*
 !server/logs/.gitkeep
+coverage/
