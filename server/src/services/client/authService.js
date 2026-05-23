@@ -3,6 +3,9 @@ const passwordHelper = require('../../utils/passwordHelper');
 const jwtHelper = require('../../utils/jwtHelper');
 const crypto = require('crypto');
 const emailHelper = require('../../utils/emailHelper');
+const { OAuth2Client } = require('google-auth-library');
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 exports.registerUser = async (data) => {
     const { username, email, password, fullName } = data;
@@ -124,4 +127,66 @@ exports.resetPassword = async (token, newPassword) => {
     user.resetPasswordExpires = undefined;
 
     await user.save();
+};
+
+exports.loginWithGoogle = async (idToken) => {
+    const ticket = await googleClient.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name, picture } = payload;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+        let baseUsername = email.split('@')[0];
+        let username = baseUsername;
+        let counter = 1;
+        while (await User.findOne({ username })) {
+            username = `${baseUsername}${counter}`;
+            counter++;
+        }
+        
+        user = new User({
+            username,
+            email,
+            fullName: name,
+            avatar: picture,
+            authProvider: 'google',
+            googleId: googleId
+        });
+        await user.save();
+    } else {
+        let isModified = false;
+        if (!user.googleId) {
+            user.googleId = googleId;
+            isModified = true;
+        }
+        if (user.authProvider !== 'google' && user.authProvider !== 'local') {
+             user.authProvider = 'google';
+             isModified = true;
+        }
+        if (isModified) {
+            await user.save();
+        }
+    }
+
+    const tokenPayload = {
+        userId: user._id,
+        role: user.role
+    };
+    const token = jwtHelper.generateToken(tokenPayload);
+
+    const userResponse = {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        fullName: user.fullName,
+        balance: user.balance,
+        role: user.role,
+        avatar: user.avatar
+    };
+
+    return { token, user: userResponse };
 };

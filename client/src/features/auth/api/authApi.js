@@ -2,6 +2,7 @@ import axiosClient from '@/shared/api/axiosClient';
 
 export const authApi = {
   login: (data) => axiosClient.post('/auth/login', data),
+  googleLogin: (token) => axiosClient.post('/auth/google', { token }),
   register: (data) => axiosClient.post('/auth/register', data),
   getMe: () => axiosClient.get('/auth/me'),
   logout: () => axiosClient.post('/auth/logout'),

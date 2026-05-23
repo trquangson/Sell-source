@@ -8,6 +8,8 @@ router.post('/register', authController.register);
 
 router.post('/login', authController.login);
 
+router.post('/google', authController.loginWithGoogle);
+
 router.post('/logout', authController.logout);
 
 router.get('/me', authenticate, authController.getMe);

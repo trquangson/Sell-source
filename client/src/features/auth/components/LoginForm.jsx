@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { authApi } from '@/features/auth/api/authApi';
 import { Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { GoogleLogin } from '@react-oauth/google';
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -31,6 +32,23 @@ const LoginForm = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setLoading(true);
+    try {
+      const response = await authApi.googleLogin(credentialResponse.credential);
+      localStorage.setItem('user', JSON.stringify(response.user));
+      navigate('/');
+    } catch (err) {
+      setError(err.message || t('auth.login.google_error', 'Lỗi đăng nhập Google. Vui lòng thử lại!'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    setError(t('auth.login.google_error', 'Lỗi đăng nhập Google. Vui lòng thử lại!'));
   };
 
   return (
@@ -109,6 +127,26 @@ const LoginForm = () => {
               t('auth.login.submit', 'Đăng nhập')
             )}
           </button>
+        </div>
+
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-slate-500">
+                {t('auth.login.or_continue_with', 'Hoặc tiếp tục với')}
+              </span>
+            </div>
+          </div>
+          
+          <div className="mt-6 flex justify-center">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
+            />
+          </div>
         </div>
       </form>
     </>
